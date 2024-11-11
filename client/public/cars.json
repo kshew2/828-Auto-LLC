@@ -1,0 +1,80 @@
+[
+{
+    "_id": 1,
+    "make": "Ford",
+    "model": "Edge",
+    "color": "Black",
+    "type": "4D SUV/Crossover Utility",
+    "year": "2012",
+    "engine": "4-Cylinder Gasoline Turbocharged",
+    "category": "business",
+    "price": 10000.00,
+    "coverImage": "Black-ford-edge-ID-1.jpg",
+    "features": ["A/T", "Power Steering", "Leather Seats", "A/C", "Power Windows", "Power Door Locks", "Cruise Control", "Rear Defrost", "Driver Airbag", "No Emissions"]
+},
+{
+    "_id": 2,
+    "make": "Toyota",
+    "model": "Camry",
+    "color": "Silver",
+    "type": "4D Sedan",
+    "year": "2015",
+    "engine": "4-Cylinder Gasoline",
+    "category": "business",
+    "price": 10000.00,
+    "coverImage": "Silver-toyota-camry-ID-2.jpg",
+    "features": ["A/T", "Power Steering", "Cloth Seats", "A/C", "Power Windows", "Power Door Locks", "Cruise Control", "Driver Airbag", "ABS"]
+},
+{
+    "_id": 3,
+    "make": "Honda",
+    "model": "Civic",
+    "color": "Blue",
+    "type": "2D Coupe",
+    "year": "2018",
+    "engine": "4-Cylinder Gasoline",
+    "category": "fiction",
+    "price": 10000.00,
+    "coverImage": "Blue-honda-civic-coupe-ID-3.jpg",
+    "features": ["M/T", "Power Steering", "Leather Seats", "A/C", "Power Windows", "Rear Defrost", "Driver Airbag", "Bluetooth", "Backup Camera"]
+},
+{
+    "_id": 4,
+    "make": "Chevrolet",
+    "model": "Silverado",
+    "color": "White",
+    "type": "Pickup Truck",
+    "year": "2020",
+    "engine": "V8 Gasoline",
+    "category": "adventure",
+    "price": 10000.00,
+    "coverImage": "White-chevy-silverado-ID-4.jpg",
+    "features": ["A/T", "Power Steering", "Cloth Seats", "A/C", "Power Windows", "Power Door Locks", "Cruise Control", "Rearview Camera", "Tow Package", "Driver Airbag"]
+},
+{
+    "_id": 5,
+    "make": "Tesla",
+    "model": "Model S",
+    "color": "Red",
+    "type": "4D Sedan",
+    "year": "2022",
+    "engine": "Electric",
+    "category": "adventure",
+    "price": 10000.00,
+    "coverImage": "Red-Tesla-models-ID-5.jpg",
+    "features": ["A/T", "Leather Seats", "A/C", "Power Windows", "Power Door Locks", "Cruise Control", "Rear Defrost", "Driver Airbag", "Autopilot", "Touchscreen Display"]
+},
+{
+    "_id": 6,
+    "make": "BMW",
+    "model": "X5",
+    "color": "Black",
+    "type": "4D SUV",
+    "year": "2019",
+    "engine": "6-Cylinder Diesel",
+    "category": "horror",
+    "price": 10000.00,
+    "coverImage": "Black-bmw-x5-ID-6.jpg",
+    "features": ["A/T", "Power Steering", "Leather Seats", "A/C", "Power Windows", "Power Door Locks", "Cruise Control", "Driver Airbag", "Navigation System", "Backup Camera"]
+}
+]
