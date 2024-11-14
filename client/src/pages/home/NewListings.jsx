@@ -36,39 +36,11 @@ const NewListings = () => {
                 </select>
             </div>
 
-            {/* Swiper Slider */}
-            <Swiper
-                spaceBetween={20} // Space between slides
-                slidesPerView={1} // Show one slide at a time
-                breakpoints={{
-                    640: {
-                        slidesPerView: 2, // 2 slides on small screens
-                    },
-                    768: {
-                        slidesPerView: 3, // 3 slides on medium screens
-                    },
-                    1024: {
-                        slidesPerView: 4, // 4 slides on large screens
-                    },
-                }}
-                navigation={{ clickable: true }} // Enable navigation
-                pagination={{ clickable: true }} // Enable pagination
-                className="mySwiper relative z-50"
-            >
-                {filteredCars.map((car, index) => (
-                    <SwiperSlide key={index}>
-                        <CarCard car={car} />
-                    </SwiperSlide>
+            <div>
+            {filteredCars.map((car, index) => (
+                        <CarCard car={car}  key={index}/>
                 ))}
-                
-                {/* Custom Navigation Buttons */}
-                <div className="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 text-2xl text-white z-10 cursor-pointer bg-black bg-opacity-50 p-2 rounded-full shadow-md hover:bg-secondary">
-                    &lt;
-                </div>
-                <div className="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 text-2xl text-white z-10 cursor-pointer bg-black bg-opacity-50 p-2 rounded-full shadow-md hover:bg-secondary">
-                    &gt;
-                </div>
-            </Swiper>
+            </div>
         </div>
     );
 };
