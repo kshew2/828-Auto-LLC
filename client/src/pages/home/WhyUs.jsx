@@ -5,6 +5,7 @@ import keys from "../../assets/gifs/keys.gif";
 import truckdriving from "../../assets/gifs/truckdriving.gif";
 import speedometer from "../../assets/gifs/speedometer.gif";
 import { Link } from 'react-router-dom';
+import Parallax from "../../components/Parallax";
 
 const WhyUs = () => {
   const [isInView, setIsInView] = useState(false);
@@ -40,21 +41,21 @@ const WhyUs = () => {
           className={`animated-fill ${isInView ? "active" : ""} `}
         ></div>
         <div className="flex flex-col w-12/12 mx-auto sm:flex-row">
-          <div className="flex flex-col px-1 mx-auto">
+          <div className="flex flex-col px-1 mx-auto sm:mx-3">
             <img src={cardriving} alt="Car Driving" />
             <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
               Certified Vehicles Only
             </h4>
           </div>
-          <div className="flex flex-col px-1 mx-3">
-            <img src={carwithplus} />
+          <div className="flex flex-col px-1 sm:mx-3 mx-auto">
+            <img src={carwithplus} className="sm:mx-auto ml-9"/>
             <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
               Certified Vehicles Only
             </h4>
           </div>
           <div className="flex flex-col px-1 mx-3">
             <img src={keys} />
-            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
+            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-16">
               Certified Vehicles Only
             </h4>
           </div>
@@ -72,7 +73,7 @@ const WhyUs = () => {
           </div>
         </div>
       </div>
-      <div className="bg-primary text-center h-2/4 py-60 ">
+      <div className="bg-primary text-center h-2/4 py-48 ">
         <p className=" w-11/12 text-center mx-auto  sm:text-3xl text-4xl xl:mb-6 mb-6 font-semibold text-tertiary-accent font-primary">
           Looking for Financing? We've Got You Covered: Explore our low APR
           financing options and get behind the wheel of your desired vehicle.
@@ -80,6 +81,9 @@ const WhyUs = () => {
         <div className="my-8">
         <Link className="bg-tertiary-accent py-3 px-4 text-white font-primary font-semibold text-lg" to="/about">About us</Link>
         </div>
+      </div>
+      <div className="">
+      <Parallax/>
       </div>
     </div>
   );
