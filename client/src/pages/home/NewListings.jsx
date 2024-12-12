@@ -5,6 +5,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
 
 const categories = [
   "Choose a genre",
@@ -16,14 +17,17 @@ const categories = [
 ];
 
 const NewListings = () => {
-  const [cars, setCars] = useState([]);
+  // const [cars, setCars] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
 
-  useEffect(() => {
-    fetch("cars.json")
-      .then((res) => res.json())
-      .then((data) => setCars(data));
-  }, []);
+  const {data: cars = []} = useFetchAllCarsQuery()
+  console.log(cars)
+
+  // useEffect(() => {
+  //   fetch("cars.json")
+  //     .then((res) => res.json())
+  //     .then((data) => setCars(data));
+  // }, []);
 
   const filteredCars =
     selectedCategory === "Choose a genre"
