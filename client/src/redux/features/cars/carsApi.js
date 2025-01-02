@@ -28,7 +28,7 @@ const carsApi = createApi ({
         }),
         addCar: builder.mutation({
             query: (newCar) => ({
-                url: `/create-book`,
+                url: `/add-car`,
                 method: "POST",
                 body: newCar
             }),

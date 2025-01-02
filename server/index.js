@@ -20,6 +20,7 @@ app.use("/api/cars", carRoutes);
 
 async function main() {
     try {
+        //console.log('Connecting to MongoDB with URL:', process.env.DB_URL)
         await mongoose.connect(process.env.DB_URL);
         console.log("MongoDB connected successfully");
         
