@@ -1,32 +1,40 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const cors = require("cors");
 
 const mongoose = require('mongoose');
 
 const port = process.env.PORT || 5000;
-require('dotenv').config()
+require('dotenv').config();
 
-//middleware
+// middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:5173/'],
-    credentials: true
-}))
+    origin: 'http://localhost:5173',  // Allow your frontend to access the backend
+    credentials: true,                // Allow credentials (cookies, headers)
+}));
 
-//routes
-const carRoutes = require('./src/cars/car.route')
-app.use("/api/cars", carRoutes)
+// routes
+const carRoutes = require('./src/cars/car.route');
+app.use("/api/cars", carRoutes);
 
 async function main() {
-    await mongoose.connect(process.env.DB_URL);
-    app.use('/', (req, res) => {
-        res.send("Car server is running!");
-    })    
+    try {
+        await mongoose.connect(process.env.DB_URL);
+        console.log("MongoDB connected successfully");
+        
+        // This route should be after the database connection and server initialization
+        app.get('/', (req, res) => {
+            res.send("Car server is running!");
+        });
+
+        // Start the server only after the DB connection is established
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}`);
+        });
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
+    }
 }
 
-main().then(() => console.log("Mongodb connected successfully")).catch(err => console.log(err));
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+main();

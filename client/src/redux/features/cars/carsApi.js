@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import getBaseUrl from '../../../utils/baseURL'
 
 const baseQuery = fetchBaseQuery({
@@ -21,8 +21,39 @@ const carsApi = createApi ({
         fetchAllCars: builder.query({
             query: () => "/",
             providesTags: ["Cars"]
+        }),
+        fetchCarById: builder.query({
+            query: (id) => `/${id}`,
+            providesTags: (results, error, id) => [{type: "Cars", id}],
+        }),
+        addCar: builder.mutation({
+            query: (newCar) => ({
+                url: `/create-book`,
+                method: "POST",
+                body: newCar
+            }),
+            invalidatesTags: ["Cars"]
+        }),
+        updateCar: builder.mutation({
+            query: ({id, ...rest}) => ({
+                url: `/edit/${id}`,
+                method: "PUT",
+                body: rest,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }),
+            invalidatesTags: ["Cars"]
+        }),
+        deleteCar: builder.mutation({
+            query: (id) => ({
+            url: `/${id}`,
+            method: "DELETE"
+        }),
+        invalidateTags: ["Cars"]
         })
     })
 })
 
-export const {useFetchAllCarsQuery} = carsApi
+export const {useFetchAllCarsQuery, useFetchCarByIdQuery, useAddCarMutation, useUpdateCarMutation, useDeleteCarMutation} = carsApi
+export default carsApi;

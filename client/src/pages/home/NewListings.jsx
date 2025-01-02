@@ -20,7 +20,8 @@ const NewListings = () => {
   // const [cars, setCars] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
 
-  const {data: cars = []} = useFetchAllCarsQuery()
+  const {data, error, isLoading} = useFetchAllCarsQuery();
+  const cars = data?.cars || [];
   console.log(cars)
 
   // useEffect(() => {
@@ -34,6 +35,18 @@ const NewListings = () => {
       ? cars
       : cars.filter((car) => car.category === selectedCategory.toLowerCase());
 
+      if (!Array.isArray(filteredCars)) {
+        console.error("filteredCars is not an array", filteredCars);
+        return <p>Error: Invalid data structure</p>;
+      }
+    
+      if (isLoading) {
+        return <p>Loading...</p>;
+      }
+    
+      if (error) {
+        return <p>Error loading cars: {error.message}</p>;
+      }
   return (
     <div className="py-10 bg-bgdark px-5">
       <div className="max-w-screen-xl justify-center mx-auto items-center">
