@@ -13,8 +13,10 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://828-auto-llc.vercel.app'], // Allow your frontend to access the backend
-    credentials: true,                // Allow credentials (cookies, headers)
+    origin: ['http://localhost:5173', 'https://828-auto-llc.vercel.app'], // Allow your frontend URLs
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+    credentials: true, // Allow credentials (cookies, headers)
 }));
 // Configure multer (You can set custom storage options if needed)
 const upload = multer();  // This sets up multer to handle form-data, but you can configure it more if needed
