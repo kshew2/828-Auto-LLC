@@ -2,19 +2,38 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const [message, setMessage] = useState("");
+  const {registerUser, signInwithGoogle} = useAuth();
+  console.log(registerUser)
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-
-  const handleGoogleSignIn = () => {
-    
+  //Register user
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      await registerUser(data.email, data.password);
+      alert("User registered successfully");
+    } catch (error) {
+        setMessage("Please provide a valid email and password");
+        console.error(error);
+    }
+  }
+  const handleGoogleSignIn = async() => {
+    try{
+      await signInwithGoogle();
+      alert("Login successful!");
+      navigate("/")
+    } catch (error) {
+      alert("Please provide a valid email and password")
+      console.error(error);
+    }
   }
   return (
     <div className="h-[calc(100vh-120px)] flex justify-center items-center">
@@ -58,7 +77,7 @@ const Register = () => {
             <p className="text-red-500 text-xs italic mb-3">{message}</p>
           )}
           <div>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none mb-2">
+            <button className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none mb-2">
               Register
             </button>
           </div>

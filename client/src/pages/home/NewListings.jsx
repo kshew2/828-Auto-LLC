@@ -8,50 +8,52 @@ import "swiper/css/pagination";
 import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
 
 const categories = [
-  "Choose a genre",
-  "Business",
-  "Fiction",
-  "Horror",
-  "Adventure",
-  "Sci-Fi",
+  "Choose a Type",
+  "Coupe",
+  "Sedan",
+  "Pickup Truck",
+  "Crossover",
+  "Minivan",
+  "Hatchback",
+  "Convertible",
+  "Sports Car",
+  "EV",
+  "Hybrid",
+  "Minivan",
 ];
 
 const NewListings = () => {
-  // const [cars, setCars] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
+  const [selectedCategory, setSelectedCategory] = useState("Choose a Type");
 
-  const {data, error, isLoading} = useFetchAllCarsQuery();
+  const { data, error, isLoading } = useFetchAllCarsQuery();
   const cars = data?.cars || [];
-  console.log(cars)
-
-  // useEffect(() => {
-  //   fetch("cars.json")
-  //     .then((res) => res.json())
-  //     .then((data) => setCars(data));
-  // }, []);
+  console.log(cars);
 
   const filteredCars =
-    selectedCategory === "Choose a genre"
+    selectedCategory === "Choose a Type"
       ? cars
-      : cars.filter((car) => car.category === selectedCategory.toLowerCase());
+      : cars.filter((car) => car.category.toLowerCase() === selectedCategory.toLowerCase());
 
-      if (!Array.isArray(filteredCars)) {
-        console.error("filteredCars is not an array", filteredCars);
-        return <p>Error: Invalid data structure</p>;
-      }
-    
-      if (isLoading) {
-        return <p>Loading...</p>;
-      }
-    
-      if (error) {
-        return <p>Error loading cars: {error.message}</p>;
-      }
+  console.log("Filtered Cars:", filteredCars);
+
+  if (!Array.isArray(filteredCars)) {
+    console.error("filteredCars is not an array", filteredCars);
+    return <p>Error: Invalid data structure</p>;
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading cars: {error.message}</p>;
+  }
+
   return (
     <div className="py-10 bg-bgdark px-5">
       <div className="max-w-screen-xl justify-center mx-auto items-center">
         <h2 className="text-3xl font-semibold mb-6 text-secondary font-primary">
-          New Listings
+          Newest Listings
         </h2>
 
         {/* Category Filtering */}
@@ -77,15 +79,17 @@ const NewListings = () => {
         ) : (
           <Swiper
             modules={[Navigation, Pagination]}
-            spaceBetween={20}
+            spaceBetween={10}
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
             className="car-carousel bg-bgdark"
           >
             {filteredCars.map((car, index) => (
-              <SwiperSlide key={index} className="flex justify-center">
-                <CarCard car={car} />
+              <SwiperSlide key={index} className="flex justify-center w-full">
+                <div className="w-full max-w-screen-xl">
+                  <CarCard car={car} />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>

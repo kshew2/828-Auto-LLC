@@ -1,24 +1,31 @@
 const express = require('express');
 const Car = require('./car.model');
-const { createACar, getAllCars, getSingleCar, updateCar, deleteCar } = require('./car.controller');
+const { createACar, getAllCars, getSingleCar, updateCar, deleteCar, getLatestCars } = require('./car.controller');
+const verifyAdminToken = require('../middleware/verifyAdminToken');
+const multer = require('multer');
+const cloudinary = require('../config/cloudinaryConfig');
 const router = express.Router();
 
-//frontend request to backend server => controller => car schema => database => send to server =>
-    // back to frontend
+const upload = multer({ storage: multer.memoryStorage() }).fields([
+    { name: 'media[]', maxCount: 20 }  // 'media[]' must match the name attribute in your form
+]);
 
-//post a car
-router.post("/add-car", createACar);
+// Post a car
+router.post("/add-car", verifyAdminToken, upload, createACar);
 
-//get all cars
+// Get all cars
 router.get("/", getAllCars);
 
-//get single car
+// Get single car
 router.get("/:id", getSingleCar);
 
-//update a car
-router.put("/edit/:id", updateCar);
+//Get 5 latest cars
+router.get("/latest", getLatestCars);
 
-//deleting a car
-router.delete("/delete/:id", deleteCar);
+// Update a car
+router.put("/edit/:id", verifyAdminToken, upload, updateCar);
+
+// Delete a car
+router.delete("/delete/:id", verifyAdminToken, deleteCar);
 
 module.exports = router;

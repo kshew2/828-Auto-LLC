@@ -8,43 +8,61 @@ const carSchema = new mongoose.Schema(
     // },
     make: {
       type: String,
-      required: true,
+      required: false,
     },
     model: {
       type: String,
-      required: true,
+      required: false,
     },
     year: {
       type: String,
-      required: true,
+      required: false,
     },
     type: {
       type: String,
-      required: true,
+      required: false,
     },
     engine: {
       type: String,
-      required: true,
+      required: false,
     },
     category: {
       type: String,
-      required: true,
+      required: false,
     },
     price: {
       type: Number,
-      required: true,
+      required: false,
     },
-    coverImage: {
+    status: {
       type: String,
-      required: true,
+      enum: ["available", "sold", "maintenance"],
+      default: "available",
     },
+    // coverImages: {
+    //   type: Array,
+    //   required: true,
+    // },
     features: {
       type: Array,
-      required: true,
+      required: false,
     },
+    media: {
+      type: Array,
+      required: false,
+    },
+    coverImage: String,
     color: {
       type: String,
-      required: true,
+      required: false,
+    },
+    trim: {
+      type: String,
+      required: false,
+    },
+    mileage: {
+      type: Number,
+      required: false,
     },
     createdAt: {
       type: Date,

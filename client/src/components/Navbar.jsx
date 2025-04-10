@@ -1,47 +1,107 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { HiOutlineUser } from "react-icons/hi";
-import { HiPhone } from "react-icons/hi";
-import { HiLocationMarker } from "react-icons/hi";
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { HiOutlineUser, HiPhone, HiLocationMarker } from "react-icons/hi";
 import { FaCaretSquareDown } from "react-icons/fa";
 
 const navigation = [
-  {
-    name: "Dashboard",
-    href: "/dashboard",
-  },
-  {
-    name: "Orders",
-    href: "/orders",
-  },
-  {
-    name: "Cart Page",
-    href: "/cart",
-  },
-  {
-    name: "Check Out",
-    href: "/checkout",
-  },
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Manage Cars", href: "/dashboard/manage-cars" },
+  { name: "Add Car", href: "/dashboard/add-car" },
 ];
 
 export const Navbar = () => {
-  const currentuser = false;
-  const [menuOpen, setMenuOpen] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  console.log(isDropDownOpen);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const checkToken = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
+          const currentTime = Date.now() / 1000;
+
+          if (decodedToken.exp < currentTime) {
+            localStorage.removeItem("token");
+            setIsLoggedIn(false);
+          } else {
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          console.error("Invalid token", error);
+          localStorage.removeItem("token");
+          setIsLoggedIn(false);
+        }
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkToken();
+
+    // Listen for `localStorage` changes (e.g., login/logout in another tab)
+    window.addEventListener("storage", checkToken);
+
+    return () => {
+      window.removeEventListener("storage", checkToken);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setMenuOpen(false);
+      setIsDropDownOpen(false);
+    };
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropDownOpen(false);
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Close the menu when navigating to another page
+    setMenuOpen(false);
+    setIsDropDownOpen(false);
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
+  const handleNavLinkClick = () => {
+    setMenuOpen(false);
+    setIsDropDownOpen(false);
+  };
 
   return (
     <div className="max-w-full mx-auto py-2 bg-bgdark">
       <header className="max-w-screen-xl mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
-          {/* Logo on the left */}
+          {/* Logo */}
           <div className="flex-1 text-secondary">
             <NavLink to="/" className="flex-shrink-0">
               Logo
             </NavLink>
           </div>
 
-          {/* Middle menu items, centered on larger screens */}
+          {/* Middle menu items */}
           <div className="hidden lg:flex flex-1 justify-center text-secondary font-secondary font-extralight">
             <ul className="flex items-center gap-8">
               <li>
@@ -52,6 +112,7 @@ export const Navbar = () => {
                       ? "text-secondary-accent"
                       : "text-secondary hover:text-secondary-accent"
                   }
+                  onClick={handleNavLinkClick}
                 >
                   Home
                 </NavLink>
@@ -64,6 +125,7 @@ export const Navbar = () => {
                       ? "text-secondary-accent"
                       : "text-secondary hover:text-secondary-accent"
                   }
+                  onClick={handleNavLinkClick}
                 >
                   All Inventory
                 </NavLink>
@@ -76,6 +138,7 @@ export const Navbar = () => {
                       ? "text-secondary-accent"
                       : "text-secondary hover:text-secondary-accent"
                   }
+                  onClick={handleNavLinkClick}
                 >
                   About
                 </NavLink>
@@ -88,6 +151,7 @@ export const Navbar = () => {
                       ? "text-secondary-accent"
                       : "text-secondary hover:text-secondary-accent"
                   }
+                  onClick={handleNavLinkClick}
                 >
                   Contact
                 </NavLink>
@@ -95,11 +159,11 @@ export const Navbar = () => {
             </ul>
           </div>
 
-          {/* Right div with contact info, visible on larger screens */}
+          {/* Right div */}
           <div className="hidden lg:flex flex-1 justify-end items-center text-secondary font-secondary font-extralight">
             <div className="lg:flex flex justify-between gap-5 mx-auto text-center items-center">
               <div className="relative m-auto">
-                {currentuser ? (
+                {isLoggedIn ? (
                   <div className="relative">
                     <button
                       onClick={() => setIsDropDownOpen(!isDropDownOpen)}
@@ -112,11 +176,12 @@ export const Navbar = () => {
                       <span>Admin</span>
                       <FaCaretSquareDown className="ml-1" />
                     </button>
-                    {/* Dropdown */}
+
                     {isDropDownOpen && (
                       <div
-                        className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-secondary text-white shadow-lg rounded"
-                        style={{ minWidth: "150px" }} // Optional: Adjust dropdown width
+                        ref={dropdownRef}
+                        className="absolute z-50 left-1/2 transform -translate-x-1/2 mt-2 bg-secondary text-white shadow-lg rounded"
+                        style={{ minWidth: "150px" }}
                       >
                         <ul>
                           {navigation.map((item) => (
@@ -128,36 +193,37 @@ export const Navbar = () => {
                                     ? "text-secondary-accent"
                                     : "text-bgdark hover:text-secondary-accent"
                                 }
+                                onClick={handleNavLinkClick}
                               >
                                 {item.name}
                               </NavLink>
                             </li>
                           ))}
+                          <li>
+                            <button
+                              onClick={handleLogout}
+                              className="w-full text-center text-bgdark hover:text-secondary-accent"
+                            >
+                              Logout
+                            </button>
+                          </li>
                         </ul>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="m-auto">
-                    <NavLink
-                      to="/login"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "text-secondary-accent"
-                          : "text-secondary hover:text-secondary-accent"
-                      }
-                    >
-                      Login
-                    </NavLink>
-                  </div>
+                  <NavLink
+                    to="/admin"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-secondary-accent"
+                        : "text-secondary hover:text-secondary-accent"
+                    }
+                    onClick={handleNavLinkClick}
+                  >
+                    Login
+                  </NavLink>
                 )}
-              </div>
-
-              {/* <div className="m-auto">
-                <NavLink to="/admin" className={({ isActive }) => (isActive ? 'text-secondary-accent' : 'text-secondary')}>Admin</NavLink>
-              </div> */}
-              <div className="m-auto text-2xl text-accent">
-                {/* <Link to="/profile"><HiOutlineUser/></Link> */}
               </div>
               <ul className="m-auto">
                 <li className="py-1">Cell Phone: 828-238-4020</li>
@@ -166,26 +232,16 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* Menu toggle button on the far right for small screens
-        <div className="md:hidden flex-1 flex justify-end text-secondary font-secondary">
-          <button 
-            className='text-xl' 
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            &#9776; {/* Hamburger icon *
-          </button>
-        </div> */}
-          {/* Menu toggle button on the far right for small screens */}
+          {/* Mobile menu toggle */}
           <div className="lg:hidden flex-1 flex justify-end text-secondary font-secondary">
             <button className="text-xl" onClick={() => setMenuOpen(!menuOpen)}>
-              {menuOpen ? "✖" : "☰"} {/* Conditional icon rendering */}
+              {menuOpen ? "✖" : "☰"}
             </button>
           </div>
 
-          {/* Toggleable menu items and right div for small screens */}
+          {/* Mobile menu */}
           {menuOpen && (
             <div className="lg:hidden z-50 absolute top-20 left-0 right-0 bg-bgdark mt-2 py-4 shadow-md text-secondary font-secondary font-extralight">
-              {/* Centered toggleable menu items */}
               <ul className="flex flex-col items-center gap-4">
                 <li>
                   <NavLink
@@ -195,6 +251,7 @@ export const Navbar = () => {
                         ? "text-secondary-accent"
                         : "text-secondary hover:text-secondary-accent"
                     }
+                    onClick={handleNavLinkClick}
                   >
                     Home
                   </NavLink>
@@ -207,6 +264,7 @@ export const Navbar = () => {
                         ? "text-secondary-accent"
                         : "text-secondary hover:text-secondary-accent"
                     }
+                    onClick={handleNavLinkClick}
                   >
                     All Inventory
                   </NavLink>
@@ -219,6 +277,7 @@ export const Navbar = () => {
                         ? "text-secondary-accent"
                         : "text-secondary hover:text-secondary-accent"
                     }
+                    onClick={handleNavLinkClick}
                   >
                     About
                   </NavLink>
@@ -231,68 +290,31 @@ export const Navbar = () => {
                         ? "text-secondary-accent"
                         : "text-secondary hover:text-secondary-accent"
                     }
+                    onClick={handleNavLinkClick}
                   >
                     Contact
                   </NavLink>
                 </li>
-                <li className="mx-auto text-center items-center">
-                  <div className="relative">
-                    {currentuser ? (
-                      <>
-                        <button
-                          onClick={() => setIsDropDownOpen(!isDropDownOpen)}
-                          className={`flex items-center justify-center ${
-                            isDropDownOpen
-                              ? "text-secondary-accent"
-                              : "text-secondary hover:text-secondary-accent"
-                          }`}
-                        >
-                          <span>Admin</span>
-                          <FaCaretSquareDown className="ml-1" />
-                        </button>
-                        {/* Dropdown */}
-                        {isDropDownOpen && (
-                          <div
-                            className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-secondary text-white shadow-lg rounded"
-                            style={{ minWidth: "150px" }} // Optional: Adjust dropdown width
-                          >
-                            <ul>
-                              {navigation.map((item) => (
-                                <li key={item.name}>
-                                  <NavLink
-                                    to={item.href}
-                                    className={({ isActive }) =>
-                                      isActive
-                                        ? "text-secondary-accent"
-                                        : "text-bgdark hover:text-secondary-accent"
-                                    }
-                                  >
-                                    {item.name}
-                                  </NavLink>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <NavLink
-                        to="/login"
-                        className={({ isActive }) =>
-                          isActive
-                            ? "text-secondary-accent"
-                            : "text-secondary hover:text-secondary-accent"
-                        }
-                      >
-                        Login
-                      </NavLink>
-                    )}
-                  </div>
-                </li>
               </ul>
-              {/* Right div with contact info, centered below menu items */}
-              <div className="mt-4">
-                <ul className="flex flex-col items-center gap-4 text-secondary font-secondary font-extralight">
+              {/* Static content (login button, address, phone) */}
+              <div className="mt-4 text-center">
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className="text-secondary hover:text-secondary-accent"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <NavLink
+                    to="/admin"
+                    className="text-secondary hover:text-secondary-accent"
+                    onClick={handleNavLinkClick}
+                  >
+                    Login
+                  </NavLink>
+                )}
+                <ul className="flex flex-col mt-4 items-center gap-4 text-secondary font-secondary font-extralight">
                   <li>
                     <div className="flex items-center gap-3">
                       <HiPhone className="text-accent text-lg" />

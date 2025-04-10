@@ -4,6 +4,16 @@ import Home from "../pages/home/Home";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import CarDetail from "../pages/cars/CarDetail";
+import AdminRoute from "./AdminRoute";
+import AdminLogin from "../components/AdminLogin";
+import DashboardLayout from "../pages/dashboard/DashboardLayout";
+import Dashboard from "../pages/dashboard/Dashboard";
+import ManageCars from "../pages/dashboard/manageCars/ManageCars";
+import AddCar from "../pages/dashboard/addCar/AddCar";
+import UpdateCar from "../pages/dashboard/editCar/UpdateCar";
+import AllInventory from "../pages/inventory/AllInventory";
+import AboutUs from "../pages/about/AboutUs";
+import Contact from "../pages/contact/Contact";
 
 const router = createBrowserRouter([
     {
@@ -16,20 +26,20 @@ const router = createBrowserRouter([
         },
         {
             path: "/allinventory",
-            element: <div>All Inventory</div>
+            element: <AllInventory />
         },
         {
             path: "/about",
-            element: <div>About</div>
+            element: <AboutUs />
         },
         {
             path: "/contact",
-            element: <div>Contact</div>
+            element: <Contact />
         },
-        {
-            path: "/admin",
-            element: <div>Admin</div>
-        },
+        // {
+        //     path: "/admin",
+        //     element: <div>Admin</div>
+        // },
         {
             path: "/profile",
             element: <div>Profile</div>
@@ -48,6 +58,34 @@ const router = createBrowserRouter([
         }
       ]
     },
+    {
+        path: "/admin",
+        element: <AdminLogin/>
+    },
+    {
+        path: "/dashboard",
+        element:( <AdminRoute >
+            <DashboardLayout/>
+        </AdminRoute>),
+        children: [
+            {
+                path: "",
+                element: <AdminRoute><Dashboard/></AdminRoute>
+            }, 
+            {
+                path: "add-new-car",
+                element: <AdminRoute><AddCar/></AdminRoute>
+            },
+            {
+                path: "edit-car/:id",
+                element: <AdminRoute><UpdateCar/></AdminRoute>
+            },
+            {
+                path: "manage-cars",
+                element: <AdminRoute><ManageCars/></AdminRoute>
+            }
+        ]
+    }
   ]);
 
   export default router;

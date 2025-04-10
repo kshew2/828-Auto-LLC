@@ -1,20 +1,21 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import getBaseUrl from '../../../utils/baseURL'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import getBaseUrl from '../../../utils/baseURL';
+import axiosInstance from '../../../utils/axiosInstance';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: `${getBaseUrl()}/api/cars`,
+    baseUrl: `${axiosInstance.defaults.baseURL}/api/cars`,
     credentials: 'include',
-    prepareHeaders: (Headers) => {
+    prepareHeaders: (headers) => {
         const token = localStorage.getItem('token');
-        if(token) {
-            Headers.set('Authorization', `Bearer ${token}`);
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`);
         }
-        return Headers;
+        return headers;
     }
-})
+});
 
-const carsApi = createApi ({
-    reducerPath: 'carApi',
+const carsApi = createApi({
+    reducerPath: 'carsApi',
     baseQuery,
     tagTypes: ['Cars'],
     endpoints: (builder) => ({
@@ -22,38 +23,46 @@ const carsApi = createApi ({
             query: () => "/",
             providesTags: ["Cars"]
         }),
+        fetchLatestCars: builder.query({
+            query: () => "/latest",
+            providesTags: ["Cars"]
+        }),
         fetchCarById: builder.query({
             query: (id) => `/${id}`,
-            providesTags: (results, error, id) => [{type: "Cars", id}],
+            providesTags: (result, error, id) => [{ type: "Cars", id }],
         }),
         addCar: builder.mutation({
             query: (newCar) => ({
-                url: `/add-car`,
+                url: "/add-car",
                 method: "POST",
-                body: newCar
+                body: newCar,
             }),
-            invalidatesTags: ["Cars"]
+            invalidatesTags: ["Cars"],
         }),
         updateCar: builder.mutation({
-            query: ({id, ...rest}) => ({
+            query: ({ id, formData }) => ({
                 url: `/edit/${id}`,
                 method: "PUT",
-                body: rest,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: formData,
             }),
-            invalidatesTags: ["Cars"]
+            invalidatesTags: (result, error, { id }) => [{ type: "Cars", id }],
         }),
         deleteCar: builder.mutation({
             query: (id) => ({
-            url: `/${id}`,
-            method: "DELETE"
+                url: `/delete/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: (result, error, id) => [{ type: "Cars", id }],
         }),
-        invalidateTags: ["Cars"]
-        })
-    })
-})
+    }),
+});
 
-export const {useFetchAllCarsQuery, useFetchCarByIdQuery, useAddCarMutation, useUpdateCarMutation, useDeleteCarMutation} = carsApi
+export const {
+    useFetchAllCarsQuery,
+    useFetchCarByIdQuery,
+    useAddCarMutation,
+    useUpdateCarMutation,
+    useDeleteCarMutation,
+} = carsApi;
+
 export default carsApi;
