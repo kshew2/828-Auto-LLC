@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase/firebase.config'; // Import Firebase Auth
 
 function DashboardLayout() {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Log the user out from Firebase
+      console.log('User logged out successfully');
+      navigate('/admin'); // Redirect to the login page
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+    }
   };
 
   const toggleSidebar = () => {

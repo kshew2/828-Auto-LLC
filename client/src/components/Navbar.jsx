@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { HiOutlineUser, HiPhone, HiLocationMarker } from "react-icons/hi";
 import { FaCaretSquareDown } from "react-icons/fa";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
@@ -17,61 +19,40 @@ export const Navbar = () => {
   const location = useLocation();
   const dropdownRef = useRef(null);
 
+  // Track Firebase authentication state
   useEffect(() => {
-    const checkToken = () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
-          const currentTime = Date.now() / 1000;
-
-          if (decodedToken.exp < currentTime) {
-            localStorage.removeItem("token");
-            setIsLoggedIn(false);
-          } else {
-            setIsLoggedIn(true);
-          }
-        } catch (error) {
-          console.error("Invalid token", error);
-          localStorage.removeItem("token");
-          setIsLoggedIn(false);
-        }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
       }
-    };
+    });
 
-    checkToken();
-
-    // Listen for `localStorage` changes (e.g., login/logout in another tab)
-    window.addEventListener("storage", checkToken);
-
-    return () => {
-      window.removeEventListener("storage", checkToken);
-    };
+    return () => unsubscribe(); // Cleanup the listener on unmount
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setMenuOpen(false);
-      setIsDropDownOpen(false);
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setMenuOpen(false);
+  //     setIsDropDownOpen(false);
+  //   };
 
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropDownOpen(false);
-        setMenuOpen(false);
-      }
-    };
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setIsDropDownOpen(false);
+  //       setMenuOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScroll);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // Close the menu when navigating to another page
@@ -79,10 +60,14 @@ export const Navbar = () => {
     setIsDropDownOpen(false);
   }, [location]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Log out from Firebase
+      setIsLoggedIn(false);
+      navigate("/"); // Redirect to the home page
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
   };
 
   const handleNavLinkClick = () => {
@@ -298,17 +283,63 @@ export const Navbar = () => {
               </ul>
               {/* Static content (login button, address, phone) */}
               <div className="mt-4 text-center">
-                {isLoggedIn ? (
-                  <button
-                    onClick={handleLogout}
-                    className="text-secondary hover:text-secondary-accent"
-                  >
-                    Logout
-                  </button>
+              {isLoggedIn ? (
+                  <div className="relative flex items-center justify-center mt-4">
+
+                    <button
+                      onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+                      className={`flex items-center justify-center ${
+                        isDropDownOpen
+                          ? "text-secondary-accent"
+                          : "text-secondary hover:text-secondary-accent"
+                      }`}
+                    >
+                      <span>Admin</span>
+                      <FaCaretSquareDown className="ml-1" />
+                    </button>
+
+                    {isDropDownOpen && (
+                      <div
+                      ref={dropdownRef}
+                      className="absolute z-50 top-full left-1/2 transform -translate-x-1/2 pt-2 bg-secondary text-white shadow-lg rounded"
+                      style={{ minWidth: "150px" }}
+                      >
+                        <ul>
+                          {navigation.map((item) => (
+                            <li key={item.name}>
+                              <NavLink
+                                to={item.href}
+                                className={({ isActive }) =>
+                                  isActive
+                                    ? "text-secondary-accent"
+                                    : "text-bgdark hover:text-secondary-accent"
+                                }
+                                onClick={handleNavLinkClick}
+                              >
+                                {item.name}
+                              </NavLink>
+                            </li>
+                          ))}
+                          <li>
+                            <button
+                              onClick={handleLogout}
+                              className="w-full text-center text-bgdark hover:text-secondary-accent"
+                            >
+                              Logout
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <NavLink
                     to="/admin"
-                    className="text-secondary hover:text-secondary-accent"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-secondary-accent"
+                        : "text-secondary hover:text-secondary-accent"
+                    }
                     onClick={handleNavLinkClick}
                   >
                     Login

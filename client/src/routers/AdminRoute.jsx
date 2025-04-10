@@ -1,12 +1,20 @@
-import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase/firebase.config';
 
-const AdminRoute = ({children}) => {
- const token = localStorage.getItem('token');
- if(!token) {
-    return <Navigate to="/admin"/>
- }
- return children ? children: <Outlet/>;
-}
+const AdminRoute = ({ children }) => {
+  const [user, loading] = useAuthState(auth);
 
-export default AdminRoute
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading spinner while checking authentication
+  }
+
+  if (!user) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return children;
+};
+
+export default AdminRoute;

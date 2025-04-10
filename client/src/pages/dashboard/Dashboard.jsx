@@ -1,68 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebase/firebase.config'; // Import Firebase Auth
 import Loading from '../../components/Loading';
 import { FaCar, FaChartBar, FaTrophy } from 'react-icons/fa';
 import axiosInstance from '../../utils/axiosInstance';
 
 const Dashboard = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // For data loading
+    const [authLoading, setAuthLoading] = useState(true); // For authentication check
     const [totalCarsSold, setTotalCarsSold] = useState(0);
     const [topCategory, setTopCategory] = useState('No Data');
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                console.log('Fetching data from /api/cars...');
-                const response = await axiosInstance.get('/api/cars');
-                console.log('API Response:', response.data);
-
-                // Access the cars array from the response object
-                const cars = response.data.cars;
-
-                // Check if cars data exists
-                if (!cars || cars.length === 0) {
-                    console.warn('No cars data found.');
-                    setTotalCarsSold(0);
-                    setTopCategory('No Data');
-                    setLoading(false);
-                    return;
-                }
-
-                // Filter cars with status "sold"
-                const soldCars = cars.filter((car) => car.status === 'sold');
-                console.log('Sold Cars:', soldCars);
-
-                // Calculate total cars sold
-                const totalSold = soldCars.length;
-                setTotalCarsSold(totalSold);
-
-                // Calculate top category among sold cars
-                const categoryCount = soldCars.reduce((acc, car) => {
-                    const category = car.category || 'Unknown';
-                    acc[category] = (acc[category] || 0) + 1;
-                    return acc;
-                }, {});
-                console.log('Category Count:', categoryCount);
-
-                const topCategory = Object.keys(categoryCount).reduce(
-                    (a, b) => (categoryCount[a] > categoryCount[b] ? a : b),
-                    'No Data'
-                );
-                setTopCategory(topCategory);
-
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setTotalCarsSold(0);
-                setTopCategory('Error');
-                setLoading(false);
+        // Check if the user is authenticated
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User is authenticated:', user.email);
+                fetchData(); // Fetch data only if the user is authenticated
+                setAuthLoading(false); // Authentication check is complete
+            } else {
+                console.warn('User is not authenticated. Redirecting to login...');
+                navigate('/admin-login'); // Redirect to login page
+                setAuthLoading(false); // Authentication check is complete
             }
-        };
-        fetchData();
-    }, []);
+        });
 
-    if (loading) return <Loading />;
+        return () => unsubscribe(); // Cleanup the listener on component unmount
+    }, [navigate]);
+
+    const fetchData = async () => {
+        try {
+            console.log('Fetching data from /api/cars...');
+            const response = await axiosInstance.get('/api/cars');
+            console.log('API Response:', response.data);
+
+            // Access the cars array from the response object
+            const cars = response.data.cars;
+
+            // Check if cars data exists
+            if (!cars || cars.length === 0) {
+                console.warn('No cars data found.');
+                setTotalCarsSold(0);
+                setTopCategory('No Data');
+                setLoading(false);
+                return;
+            }
+
+            // Filter cars with status "sold"
+            const soldCars = cars.filter((car) => car.status === 'sold');
+            console.log('Sold Cars:', soldCars);
+
+            // Calculate total cars sold
+            const totalSold = soldCars.length;
+            setTotalCarsSold(totalSold);
+
+            // Calculate top category among sold cars
+            const categoryCount = soldCars.reduce((acc, car) => {
+                const category = car.category || 'Unknown';
+                acc[category] = (acc[category] || 0) + 1;
+                return acc;
+            }, {});
+            console.log('Category Count:', categoryCount);
+
+            const topCategory = Object.keys(categoryCount).reduce(
+                (a, b) => (categoryCount[a] > categoryCount[b] ? a : b),
+                'No Data'
+            );
+            setTopCategory(topCategory);
+
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setTotalCarsSold(0);
+            setTopCategory('Error');
+            setLoading(false);
+        }
+    };
+
+    if (authLoading || loading) return <Loading />; // Show loading spinner during authentication or data loading
 
     return (
         <div>
