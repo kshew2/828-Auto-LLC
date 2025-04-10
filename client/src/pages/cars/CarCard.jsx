@@ -40,7 +40,7 @@ const CarCard = ({ car }) => {
       </p>
 <hr className="my-4 border-gray-300" />
       {/* Details Grid - Adjusting layout for md screens */}
-      <div className="grid grid-cols-2 gap-y-2 text-base lg:text-xl ">
+      <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-base lg:text-xl ">
   <div className="flex lg:mt-4 lg:flex-row lg:mb-4 md:flex-col">
     <p className="font-semibold mr-2">Make:</p>
     <p className="md:ml-0">{car.make || 'N/A'}</p>

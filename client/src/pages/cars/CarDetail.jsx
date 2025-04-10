@@ -100,36 +100,36 @@ const CarDetail = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Details */}
                         <div>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Make:</strong> {car.make || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Model:</strong> {car.model || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Year:</strong> {car.year || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Color:</strong> {car.color || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Trim:</strong> {car.trim || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-sm"><strong>Engine:</strong> {car.engine || 'admin'}</p>
-                            <p className="text-gray-700 mb-2 sm:text-base text-sm">
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Make:</strong> {car.make || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Model:</strong> {car.model || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Year:</strong> {car.year || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Color:</strong> {car.color || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Trim:</strong> {car.trim || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
+                            <p className="text-gray-700 mb-2 sm:text-base text-base">
                                 <strong>Year:</strong> {new Date(car?.createdAt).toLocaleDateString()}
                             </p>
                             {/* <p className="text-gray-700 mb-2 sm:text-base text-sm capitalize">
                                 <strong>Category:</strong> {car?.category}
                             </p> */}
-                            <p className="text-gray-700 sm:text-base text-sm"><strong>Description:</strong> {car.model}</p>
+                            <p className="text-gray-700 sm:text-base text-base"><strong>Description:</strong> {car.model}</p>
                         </div>
 
                         {/* Features */}
                         <div>
-                            <strong className="text-gray-700 mb-2 block sm:text-base text-sm">Features:</strong>
+                            <strong className="text-gray-700 mb-2 block sm:text-base text-base">Features:</strong>
                             {car.features && car.features.length > 0 ? (
                                 <ul className="list-disc ml-4 space-y-1">
                                     {car.features.map((feature, index) => (
-                                        <li key={index} className="text-gray-700 sm:text-base text-sm">
+                                        <li key={index} className="text-gray-700 sm:text-base text-base">
                                             {feature || 'No feature available'}
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-gray-700 sm:text-base text-sm">No features available</p>
+                                <p className="text-gray-700 sm:text-base text-base">No features available</p>
                             )}
                         </div>
                     </div>

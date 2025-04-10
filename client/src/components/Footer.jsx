@@ -5,6 +5,10 @@ import { HiPhone } from "react-icons/hi";
 import { HiLocationMarker } from "react-icons/hi";
 import { FaFacebook } from "react-icons/fa";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
 
 
 const Footer = () => {
@@ -26,6 +30,17 @@ const Footer = () => {
       "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645/@35.8752307,-81.5944216,17z/data=!3m1!4b1!4m6!3m5!1s0x8850d94e1760b347:0xb9f8f5a45a1cc6df!8m2!3d35.8752307!4d-81.5918467!16s%2Fg%2F11j7lwyc8f?entry=ttu&g_ep=EgoyMDI0MTExOC4wIKXMDSoASAFQAw%3D%3D"; // Replace with your desired URL
   };
 
+  const DefaultIcon = L.icon({
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41], // Default size
+    iconAnchor: [12, 41], // Anchor point
+    popupAnchor: [1, -34], // Popup position
+    shadowSize: [41, 41], // Shadow size
+  });
+  
+  L.Marker.prototype.options.icon = DefaultIcon;
+
   return (
     <div className="w-full h-full bg-bgdark flex flex-col items-center justify-center text-center py-10">
       <div className="w-full h-full mx-auto">
@@ -39,7 +54,7 @@ const Footer = () => {
   <h2 className="text-4xl font-bold text-secondary">Contact us!</h2>
   {/* <p className="text-lg mt-2 text-gray-300">AND DRIVE AWAY WITH YOUR NEW CAR!</p> */}
 
-   <div className="mt-6 space-y-4 sm:w-6/12 w-8/12 mx-auto whitespace-nowrap">
+   <div className="mt-6 space-y-4 md:w-8/12 sm:w-6/12 w-12/12 mx-auto whitespace-nowrap">
     {[
       { icon: <HiLocationMarker />, text: "2788 Morganton Blvd SW", link: "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645/@35.8752307,-81.5918467,17z/data=!3m1!4b1!4m6!3m5!1s0x8850d94e1760b347:0xb9f8f5a45a1cc6df!8m2!3d35.8752307!4d-81.5918467!16s%2Fg%2F11j7lwyc8f?entry=ttu&g_ep=EgoyMDI1MDIxNy4wIKXMDSoASAFQAw%3D%3D" },
       { icon: <HiMail />, text: "828autollc@mail.com", link: "mailto:828autollc@mail.com" },

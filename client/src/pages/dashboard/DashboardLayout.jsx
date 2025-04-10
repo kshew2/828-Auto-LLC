@@ -6,7 +6,7 @@ import { auth } from '../../firebase/firebase.config'; // Import Firebase Auth
 
 function DashboardLayout() {
   const navigate = useNavigate();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar is closed by default
 
   const handleLogout = async () => {
     try {
@@ -67,7 +67,7 @@ function DashboardLayout() {
         </nav>
         <button
           onClick={handleLogout}
-          className={`p-4 hover:bg-gray-700 text-left ${!isSidebarOpen && 'hidden lg:block'}`}
+          className={`p-4 hover:bg-gray-700 text-left mt-auto ${!isSidebarOpen && 'hidden lg:block'}`}
         >
           ( Log out after using )
           <br />
