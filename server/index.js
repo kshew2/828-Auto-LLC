@@ -13,7 +13,7 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: 'http://localhost:5173',  // Allow your frontend to access the backend
+    origin: ['http://localhost:5173', 'https://828-auto-llc-0.vercel.app'], // Allow your frontend to access the backend
     credentials: true,                // Allow credentials (cookies, headers)
 }));
 // Configure multer (You can set custom storage options if needed)
