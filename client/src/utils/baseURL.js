@@ -1,5 +1,5 @@
 const getBaseUrl = () => {
-    return "http://localhost:5000"
+    return "https://828-auto-llc-server.vercel.app/"
 }
 console.log(getBaseUrl());
 export default getBaseUrl;
