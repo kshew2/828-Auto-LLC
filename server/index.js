@@ -13,7 +13,7 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://828-auto-llc.vercel.app'], // Allow your frontend URLs
+    origin: ['http://localhost:5173', 'https://828autollc.vercel.app'], // Allow your frontend URLs
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
     credentials: true, // Allow credentials (cookies, headers)
