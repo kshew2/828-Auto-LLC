@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import MapLibreMap from "./MapLibreMap";
 
 
 
@@ -83,7 +84,7 @@ const Footer = () => {
             scrollWheelZoom={true}
             style={{ width: "100%", height: "400px", borderRadius: "10px" }} // Add border radius here
           > */}
-          <MapContainer
+          {/* <MapContainer
         center={[35.87544, -81.5921]} // Replace with your desired coordinates
         zoom={13}
         style={{ height: "300px", width: "100%" }}
@@ -91,7 +92,7 @@ const Footer = () => {
             {/* <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            /> */}
+            /> *
             <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -113,10 +114,11 @@ const Footer = () => {
                 >
                   For directions to 828 Auto LLC click marker
                 </a>
-              </Popup> */}
+              </Popup> *
               <Popup target="_blank">Click to open Google Maps</Popup>
             </Marker>
-          </MapContainer>
+          </MapContainer> */}
+          <MapLibreMap />
         </div>
       </div>
     </div>
