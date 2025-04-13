@@ -59,22 +59,25 @@ const Footer = () => {
         <p className="text-xl text-accent pb-6">
           AND DRIVE AWAY WITH YOUR NEW CAR!
         </p>
-        <div className="bg-tertiary-accent text-white p-8 rounded-2xl shadow-lg max-w-xl sm:mx-auto mx-10 text-center">
-  <h2 className="text-4xl font-bold text-secondary">Contact us!</h2>
-  {/* <p className="text-lg mt-2 text-gray-300">AND DRIVE AWAY WITH YOUR NEW CAR!</p> */}
+        <div className="flex justify-center items-center max-w-[380px] mx-auto">
+  <div className="bg-tertiary-accent text-white p-8 rounded-2xl shadow-lg max-w-xl w-full mx-8 overflow-hidden break-words">
+    <h2 className="text-4xl font-bold text-secondary text-left">Contact us!</h2>
 
-   <div className="mt-6 space-y-4 md:w-8/12 sm:w-6/12 w-12/12 mx-auto whitespace-nowrap">
-    {[
-      { icon: <HiLocationMarker />, text: "2788 Morganton Blvd SW", link: "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645/@35.8752307,-81.5918467,17z/data=!3m1!4b1!4m6!3m5!1s0x8850d94e1760b347:0xb9f8f5a45a1cc6df!8m2!3d35.8752307!4d-81.5918467!16s%2Fg%2F11j7lwyc8f?entry=ttu&g_ep=EgoyMDI1MDIxNy4wIKXMDSoASAFQAw%3D%3D" },
-      { icon: <HiMail />, text: "828autollc@mail.com", link: "mailto:828autollc@mail.com" },
-      { icon: <HiPhone />, text: "(828) 238-4020", link: "tel:+18282384020" },
-      { icon: <FaFacebook />, text: "Facebook", link: "https://www.facebook.com/profile.php?id=61557949206009" }
-    ].map((item, index) => (
-      <div key={index} className="flex items-center gap-x-4">
-        <div className="text-primary text-2xl w-8 flex justify-center">{item.icon}</div>
-        <a href={item.link} className="text-gray-300 text-lg hover:text-primary transition duration-300">{item.text}</a>
-      </div>
-    ))}
+    <div className="mt-6 space-y-4 w-full mx-auto text-left">
+      {[
+        { icon: <HiLocationMarker />, text: "2788 Morganton Blvd SW", link: "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645/@35.8752307,-81.5918467,17z/data=!3m1!4b1!4m6!3m5!1s0x8850d94e1760b347:0xb9f8f5a45a1cc6df!8m2!3d35.8752307!4d-81.5918467!16s%2Fg%2F11j7lwyc8f?entry=ttu&g_ep=EgoyMDI1MDIxNy4wIKXMDSoASAFQAw%3D%3D" },
+        { icon: <HiMail />, text: "828autollc@mail.com", link: "mailto:828autollc@mail.com" },
+        { icon: <HiPhone />, text: "(828) 238-4020", link: "tel:+18282384020" },
+        { icon: <FaFacebook />, text: "Facebook", link: "https://www.facebook.com/profile.php?id=61557949206009" }
+      ].map((item, index) => (
+        <div key={index} className="flex items-center gap-x-4">
+          <div className="text-primary text-2xl w-8 flex justify-center">{item.icon}</div>
+          <a href={item.link} className="text-gray-300 text-lg hover:text-primary transition duration-300">
+            {item.text}
+          </a>
+        </div>
+      ))}
+    </div>
   </div>
 </div>
         <div className="h-full w-full pt-10 py-20 px-10 flex flex-col items-center justify-center mx-auto">

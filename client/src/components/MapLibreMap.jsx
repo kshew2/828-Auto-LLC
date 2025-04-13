@@ -45,6 +45,7 @@ const MapLibreMap = () => {
   return (
     <div
       ref={mapContainer}
+      className="rounded-xl"
       style={{ width: "100%", height: "400px" }} // Map container dimensions
     />
   );
