@@ -59,7 +59,7 @@ const Footer = () => {
         <p className="text-xl text-accent pb-6">
           AND DRIVE AWAY WITH YOUR NEW CAR!
         </p>
-        <div className="flex justify-center items-center max-w-[380px] mx-auto">
+        <div className="flex justify-center items-center max-w-[420px] mx-auto">
   <div className="bg-tertiary-accent text-white p-8 rounded-2xl shadow-lg max-w-xl w-full mx-8 overflow-hidden break-words">
     <h2 className="text-4xl font-bold text-secondary text-left">Contact us!</h2>
 
