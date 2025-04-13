@@ -43,31 +43,31 @@ const WhyUs = () => {
         <div className="flex flex-col w-12/12 mx-auto sm:flex-row">
           <div className="flex flex-col px-1 mx-auto sm:mx-3">
             <img src={cardriving} alt="Car Driving" />
-            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
+            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-14">
               Certified Vehicles Only
             </h4>
           </div>
           <div className="flex flex-col px-1 sm:mx-3 mx-auto">
             <img src={carwithplus} className="sm:mx-auto ml-9"/>
-            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
+            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-12">
               Certified Vehicles Only
             </h4>
           </div>
           <div className="flex flex-col px-1 mx-3">
             <img src={keys} />
-            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-16">
+            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-8">
               Certified Vehicles Only
             </h4>
           </div>
           <div className="flex flex-col px-1 mx-3">
             <img src={truckdriving} />
-            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
+            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-14">
               Certified Vehicles Only
             </h4>
           </div>
           <div className="flex flex-col px-1 mx-3">
             <img src={speedometer} />
-            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-20">
+            <h4 className="font-semibold text-center mx-auto text-lg text-secondary-accent font-primary sm:-mt-2 -mt-8">
               Certified Vehicles Only
             </h4>
           </div>

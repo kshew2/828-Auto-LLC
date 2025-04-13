@@ -89,7 +89,7 @@ export const Navbar = () => {
           {/* Middle menu items */}
           <div className="hidden lg:flex flex-1 justify-center text-secondary font-secondary font-extralight">
             <ul className="flex items-center gap-8">
-              <li>
+              <li className="whitespace-nowrap">
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
@@ -102,7 +102,7 @@ export const Navbar = () => {
                   Home
                 </NavLink>
               </li>
-              <li>
+              <li className="whitespace-nowrap">
                 <NavLink
                   to="/allinventory"
                   className={({ isActive }) =>
@@ -115,7 +115,7 @@ export const Navbar = () => {
                   All Inventory
                 </NavLink>
               </li>
-              <li>
+              <li className="whitespace-nowrap">
                 <NavLink
                   to="/about"
                   className={({ isActive }) =>
@@ -128,7 +128,7 @@ export const Navbar = () => {
                   About
                 </NavLink>
               </li>
-              <li>
+              <li className="whitespace-nowrap">
                 <NavLink
                   to="/contact"
                   className={({ isActive }) =>
@@ -146,8 +146,8 @@ export const Navbar = () => {
 
           {/* Right div */}
           <div className="hidden lg:flex flex-1 justify-end items-center text-secondary font-secondary font-extralight">
-            <div className="lg:flex flex justify-between gap-5 mx-auto text-center items-center">
-              <div className="relative m-auto">
+            <div className="lg:flex flex justify-between gap-5 text-center items-center">
+              {/* <div className="relative m-auto">
                 {isLoggedIn ? (
                   <div className="relative">
                     <button
@@ -209,8 +209,8 @@ export const Navbar = () => {
                     Login
                   </NavLink>
                 )}
-              </div>
-              <ul className="m-auto">
+              </div> */}
+              <ul className="">
                 <li className="py-1">Cell Phone: 828-238-4020</li>
                 <li className="py-1">Address: Gamewell, NC</li>
               </ul>
@@ -283,7 +283,7 @@ export const Navbar = () => {
               </ul>
               {/* Static content (login button, address, phone) */}
               <div className="mt-4 text-center">
-              {isLoggedIn ? (
+              {/* {isLoggedIn ? (
                   <div className="relative flex items-center justify-center mt-4">
 
                     <button
@@ -344,7 +344,7 @@ export const Navbar = () => {
                   >
                     Login
                   </NavLink>
-                )}
+                )} */}
                 <ul className="flex flex-col mt-4 items-center gap-4 text-secondary font-secondary font-extralight">
                   <li>
                     <div className="flex items-center gap-3">

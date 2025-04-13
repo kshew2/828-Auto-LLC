@@ -40,36 +40,36 @@ const CarCard = ({ car }) => {
       </p>
 <hr className="my-4 border-gray-300" />
       {/* Details Grid - Adjusting layout for md screens */}
-      <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-base lg:text-xl ">
-  <div className="flex lg:mt-4 lg:flex-row lg:mb-4 md:flex-col">
+      <div className="grid grid-cols-2 gap-y-2 gap-x-3 text-base lg:text-xl ">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Make:</p>
     <p className="md:ml-0">{car.make || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row lg:mt-4 md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Trim:</p>
     <p className="md:ml-0">{car.trim || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row lg:mb-4 md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Model:</p>
     <p className="md:ml-0">{car.model || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Mileage:</p>
     <p className="md:ml-0">{car.mileage || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row lg:mb-4 md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
   <p className="font-semibold mr-2">Year:</p>
     <p className="md:ml-0">{car.year || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Type:</p>
     <p className="md:ml-0">{car.type || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row lg:mb-4 md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Color:</p>
     <p className="md:ml-0">{car.color || 'N/A'}</p>
   </div>
-  <div className="flex lg:flex-row md:flex-col">
+  <div className="flex lg:mt-4 flex-col lg:mb-4 sm:flex-row">
     <p className="font-semibold mr-2">Engine:</p>
     <p className="md:ml-0">{car.engine || 'N/A'}</p>
   </div>

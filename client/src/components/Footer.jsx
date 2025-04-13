@@ -30,16 +30,24 @@ const Footer = () => {
       "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645/@35.8752307,-81.5944216,17z/data=!3m1!4b1!4m6!3m5!1s0x8850d94e1760b347:0xb9f8f5a45a1cc6df!8m2!3d35.8752307!4d-81.5918467!16s%2Fg%2F11j7lwyc8f?entry=ttu&g_ep=EgoyMDI0MTExOC4wIKXMDSoASAFQAw%3D%3D"; // Replace with your desired URL
   };
 
-  const DefaultIcon = L.icon({
+ {/* const DefaultIcon = L.icon({
     iconUrl: markerIcon,
     shadowUrl: markerShadow,
     iconSize: [25, 41], // Default size
     iconAnchor: [12, 41], // Anchor point
     popupAnchor: [1, -34], // Popup position
     shadowSize: [41, 41], // Shadow size
+  });*/}
+
+  const customIcon = new L.Icon({
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41], // Default size
+    iconAnchor: [12, 41], // Anchor point
+    popupAnchor: [1, -34], // Popup position
   });
   
-  L.Marker.prototype.options.icon = DefaultIcon;
+ // L.Marker.prototype.options.icon = DefaultIcon;
 
   return (
     <div className="w-full h-full bg-bgdark flex flex-col items-center justify-center text-center py-10">
@@ -69,16 +77,25 @@ const Footer = () => {
   </div>
 </div>
         <div className="h-full w-full pt-10 py-20 px-10 flex flex-col items-center justify-center mx-auto">
-          <MapContainer
+          {/* <MapContainer
             center={[35.87544, -81.5921]}
             zoom={13}
             scrollWheelZoom={true}
             style={{ width: "100%", height: "400px", borderRadius: "10px" }} // Add border radius here
-          >
-            <TileLayer
+          > */}
+          <MapContainer
+        center={[35.87544, -81.5921]} // Replace with your desired coordinates
+        zoom={13}
+        style={{ height: "300px", width: "100%" }}
+      >
+            {/* <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+            /> */}
+            <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
             <Marker
               position={[35.87544, -81.5921]}
               ref={markerRef}
@@ -88,7 +105,7 @@ const Footer = () => {
                 click: handleMarkerClick,
               }}
             >
-              <Popup>
+              {/* <Popup>
                 <a
                   href="https://www.example.com"
                   target="_blank"
@@ -96,7 +113,8 @@ const Footer = () => {
                 >
                   For directions to 828 Auto LLC click marker
                 </a>
-              </Popup>
+              </Popup> */}
+              <Popup target="_blank">Click to open Google Maps</Popup>
             </Marker>
           </MapContainer>
         </div>
