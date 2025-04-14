@@ -26,6 +26,24 @@ const AddCar = () => {
     setCoverImageIndex(index);
   };
 
+  const logError = async (error) => {
+    await fetch("http://<your-backend-url>/api/logs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error }),
+    });
+  };
+  
+  const handleSubmitForm = async (data) => {
+    try {
+      await addCar(data).unwrap();
+      Swal.fire("Success", "Car added successfully!", "success");
+    } catch (error) {
+      console.error("Error:", error);
+      await logError(error.message || "Failed to add car");
+    }
+  };
+
   const onSubmit = async (data) => {
     if (mediaFiles.length === 0) {
       const confirm = await Swal.fire({
