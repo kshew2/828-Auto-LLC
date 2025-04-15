@@ -30,6 +30,7 @@ const verifyAdminToken = async (req, res, next) => {
 
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
+        console.log("Decoded Token:", decodedToken);
         if (!decodedToken.admin) {
             return res.status(403).json({ message: 'Access Denied. Admin privileges required' });
         }
