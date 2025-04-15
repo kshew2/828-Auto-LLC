@@ -7,13 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# ...existing code...
 node_modules
 dist
 dist-ssr
 *.local
 .env
 .env.*.local
-/config/firebaseAdminKey.json
+/src/config/firebaseAdminKey.json  # Updated path to match actual file location
+# ...existing code...
 
 # Editor directories and files
 .vscode/*
