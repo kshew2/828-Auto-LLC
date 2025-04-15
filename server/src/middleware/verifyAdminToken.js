@@ -1,11 +1,24 @@
-{/* Updated firebase logic*/}
 const admin = require('firebase-admin');
 
 // Initialize Firebase Admin SDK
 if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(require('../config/firebaseAdminKey.json')), // Path to your service account key
-    });
+    let serviceAccount;
+    try {
+        if (process.env.FIREBASE_ADMIN_KEY) {
+            // For production (Vercel)
+            serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_KEY);
+        } else {
+            // For local development
+            serviceAccount = require('../config/firebaseAdminKey.json');
+        }
+
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+    } catch (error) {
+        console.error('Error initializing Firebase Admin:', error);
+        throw new Error('Failed to initialize Firebase Admin SDK');
+    }
 }
 
 const verifyAdminToken = async (req, res, next) => {
@@ -36,32 +49,3 @@ const verifyAdminToken = async (req, res, next) => {
 };
 
 module.exports = verifyAdminToken;
-
-///////////////////////////////////////////////////////////////////////////////////
-
-// const jwt = require('jsonwebtoken');
-// const JWT_SECRET = process.env.JWT_SECRET_KEY;
-
-// const verifyAdminToken = (req, res, next) => {
-//     const token = req.headers['authorization']?.split(' ')[1];
-//     if (!token) {
-//         return res.status(401).json({ message: 'Access Denied. No token provided' });
-//     }
-
-//     // console.log('Token:', token);
-//     // console.log('JWT_SECRET:', JWT_SECRET);
-
-//     jwt.verify(token, JWT_SECRET, (err, user) => {
-//         if (err) {
-//             if (err.name === 'TokenExpiredError') {
-//                 return res.status(401).json({ message: 'Token expired' });
-//             }
-//             return res.status(403).json({ message: 'Invalid credentials' });
-//         }
-
-//         req.user = user;
-//         next();
-//     });
-// };
-
-// module.exports = verifyAdminToken;
