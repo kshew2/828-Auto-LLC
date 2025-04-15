@@ -22,21 +22,17 @@ if (!admin.apps.length) {
 }
 
 const verifyAdminToken = async (req, res, next) => {
+    console.log("Request Headers:", req.headers); // Debug: log headers
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: 'Access Denied. No token provided' });
     }
 
     try {
-        // Verify the Firebase ID token
         const decodedToken = await admin.auth().verifyIdToken(token);
-
-        // Check if the user has an admin role
         if (!decodedToken.admin) {
             return res.status(403).json({ message: 'Access Denied. Admin privileges required' });
         }
-
-        // Attach the user information to the request object
         req.user = decodedToken;
         next();
     } catch (error) {
