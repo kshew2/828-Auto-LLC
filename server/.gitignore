@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .env
 .env.*.local
-config/firebaseAdminKey.json
+/config/firebaseAdminKey.json
 
 # Editor directories and files
 .vscode/*
