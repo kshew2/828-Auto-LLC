@@ -60,7 +60,7 @@ const AddCar = () => {
 
         // Compress the image
         const compressedFile = await imageCompression(processedFile, {
-          maxSizeMB: 0.2, // Target size in MB (200KB)
+          maxSizeMB: 0.15, // Target size in MB (200KB)
           maxWidthOrHeight: 800, // Resize to a max width/height of 800px
           useWebWorker: true, // Use a web worker for better performance
         });
