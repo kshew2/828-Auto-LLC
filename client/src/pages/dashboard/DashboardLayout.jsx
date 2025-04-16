@@ -7,6 +7,7 @@ import { auth } from '../../firebase/firebase.config'; // Import Firebase Auth
 function DashboardLayout() {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar is closed by default
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown for mobile
 
   const handleLogout = async () => {
     try {
@@ -22,13 +23,61 @@ function DashboardLayout() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="flex flex-col h-screen bg-gray-100">
+      {/* Top Navigation Bar for Small Screens */}
+      <div className="bg-gray-800 text-white flex items-center justify-between p-4 lg:hidden">
+        <span className="font-bold text-lg">Admin Dashboard</span>
+        <button
+          onClick={toggleDropdown}
+          className="text-white focus:outline-none"
+        >
+          {isDropdownOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+        </button>
+      </div>
+
+      {/* Dropdown Menu for Small Screens */}
+      {isDropdownOpen && (
+        <div className="bg-gray-800 text-white lg:hidden">
+          <ul className="flex flex-col">
+            <li className="p-4 hover:bg-gray-700">
+              <Link to="/dashboard" onClick={toggleDropdown}>
+                Dashboard
+              </Link>
+            </li>
+            <li className="p-4 hover:bg-gray-700">
+              <Link to="/dashboard/manage-cars" onClick={toggleDropdown}>
+                Manage Cars
+              </Link>
+            </li>
+            <li className="p-4 hover:bg-gray-700">
+              <Link to="/dashboard/add-new-car" onClick={toggleDropdown}>
+                Add New Car
+              </Link>
+            </li>
+            <li className="p-4 hover:bg-gray-700">
+              <Link to="/" onClick={toggleDropdown}>
+                Return to Site
+              </Link>
+            </li>
+            <li className="p-4 hover:bg-gray-700">
+              <button onClick={handleLogout} className="w-full text-left">
+                Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
+
+      {/* Sidebar for Larger Screens */}
       <div
-        className={`${
+        className={`hidden lg:flex ${
           isSidebarOpen ? 'w-64' : 'w-16'
-        } bg-gray-800 text-white flex flex-col transition-all duration-300 lg:w-64`}
+        } bg-gray-800 text-white flex-col transition-all duration-300`}
       >
         <div className="p-4 flex items-center justify-between">
           <span className={`font-bold text-lg ${!isSidebarOpen && 'hidden lg:block'}`}>
@@ -69,11 +118,10 @@ function DashboardLayout() {
           onClick={handleLogout}
           className={`p-4 hover:bg-gray-700 text-left mt-auto ${!isSidebarOpen && 'hidden lg:block'}`}
         >
-          ( Log out after using )
-          <br />
           Logout
         </button>
       </div>
+
       {/* Main Content */}
       <div className="flex-1 overflow-auto p-4">
         <Outlet />
