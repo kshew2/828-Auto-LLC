@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { useParams } from 'react-router-dom';
 import InputField from '../addCar/InputField';
 import SelectField from '../addCar/SelectField';
+import heic2any from 'heic2any';
 
 const UpdateCar = () => {
     const { id } = useParams();
@@ -32,22 +33,40 @@ const UpdateCar = () => {
         }
     }, [car, reset, setValue, replace]);
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        const maxFileSize = 5 * 1024 * 1024; // 5MB
-        const validFiles = [];
-    
-        files.forEach((file) => {
-            if (file.size <= maxFileSize) {
-                validFiles.push(file);
-            } else {
-                alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+   
+const handleFileChange = async (e) => {
+    const files = Array.from(e.target.files);
+    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    const validFiles = [];
+
+    for (const file of files) {
+        if (file.size > maxFileSize) {
+            alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+            continue;
+        }
+
+        if (file.type === 'image/heic' || file.type === 'image/heif') {
+            try {
+                const convertedBlob = await heic2any({
+                    blob: file,
+                    toType: 'image/png',
+                });
+                const convertedFile = new File([convertedBlob], file.name.replace(/\.[^/.]+$/, '.png'), {
+                    type: 'image/png',
+                });
+                validFiles.push(convertedFile);
+            } catch (error) {
+                console.error('Error converting HEIC to PNG:', error);
+                alert(`Failed to convert "${file.name}" to PNG.`);
             }
-        });
-    
-        setMediaFiles(validFiles);
-        setValue('media', validFiles); // Update the form value for media
-    };
+        } else {
+            validFiles.push(file);
+        }
+    }
+
+    setMediaFiles(validFiles);
+    setValue('media', validFiles); // Update the form value for media
+};
 
     const handleCoverImageChange = (index) => {
         setCoverImageIndex(index);
