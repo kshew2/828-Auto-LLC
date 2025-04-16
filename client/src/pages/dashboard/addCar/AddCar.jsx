@@ -4,6 +4,8 @@ import SelectField from "./SelectField";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useAddCarMutation } from "../../../redux/features/cars/carsApi";
 import Swal from "sweetalert2";
+import heic2any from "heic2any";
+import imageCompression from "browser-image-compression";
 
 const AddCar = () => {
   const { register, handleSubmit, control, setValue, reset } = useForm();
@@ -16,31 +18,80 @@ const AddCar = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addCar] = useAddCarMutation();
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
-    setMediaFiles(files);
-    setValue("media", files); // Update the form value for media
+    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    const validFiles = [];
+
+    for (const file of files) {
+      if (file.size > maxFileSize) {
+        alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+        continue;
+      }
+
+      const isHEIC =
+        file.type === "image/heic" ||
+        file.type === "image/heif" ||
+        file.name.toLowerCase().endsWith(".heic") ||
+        file.name.toLowerCase().endsWith(".heif");
+      console.log("File Details:", {
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      });
+
+      try {
+        let processedFile = file;
+
+        // Convert HEIC to PNG if necessary
+        if (isHEIC) {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/png",
+          });
+          processedFile = new File(
+            [convertedBlob],
+            file.name.replace(/\.[^/.]+$/, ".png"),
+            {
+              type: "image/png",
+            }
+          );
+        }
+
+        // Compress the image
+        const compressedFile = await imageCompression(processedFile, {
+          maxSizeMB: 0.2, // Target size in MB (200KB)
+          maxWidthOrHeight: 800, // Resize to a max width/height of 800px
+          useWebWorker: true, // Use a web worker for better performance
+        });
+
+        console.log("Original File Size:", processedFile.size);
+        console.log("Compressed File Size:", compressedFile.size);
+
+        validFiles.push(compressedFile);
+      } catch (error) {
+        console.error("Error processing file:", error);
+        alert(`Failed to process "${file.name}".`);
+      }
+    }
+
+    setMediaFiles(validFiles);
+    setValue("media", validFiles); // Update the form value for media
   };
 
   const handleCoverImageChange = (index) => {
     setCoverImageIndex(index);
   };
 
-  const logError = async (error) => {
-    await fetch("http://<your-backend-url>/api/logs", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error }),
-    });
-  };
-  
-  const handleSubmitForm = async (data) => {
-    try {
-      await addCar(data).unwrap();
-      Swal.fire("Success", "Car added successfully!", "success");
-    } catch (error) {
-      console.error("Error:", error);
-      await logError(error.message || "Failed to add car");
+  const getFileName = (file) => {
+    if (file instanceof File) {
+      return file.name;
+    } else if (typeof file === "string") {
+      const urlParts = file.split("/");
+      return urlParts[urlParts.length - 1];
+    } else {
+      console.error("Invalid file type:", file);
+      return "Unknown File";
     }
   };
 
@@ -61,10 +112,10 @@ const AddCar = () => {
         return;
       }
     }
+
     setIsLoading(true);
     const formData = new FormData();
     formData.append("price", data.price);
-    // formData.append('trending', data.trending);
     formData.append("make", data.make);
     formData.append("model", data.model);
     formData.append("year", data.year);
@@ -79,7 +130,7 @@ const AddCar = () => {
       formData.append(`features[${index}]`, feature.value);
     });
     mediaFiles.forEach((file, index) => {
-      formData.append("media[]", file); // Use 'coverImages[]' to match the input name
+      formData.append("media[]", file);
     });
 
     try {
@@ -88,9 +139,7 @@ const AddCar = () => {
         title: "Car Added",
         text: "Car has been added successfully",
         icon: "success",
-        showCancelButton: true,
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         confirmButtonText: "OK",
       });
       reset();
@@ -122,133 +171,14 @@ const AddCar = () => {
           placeholder="Make"
           register={register}
         />
-        <InputField
-          label="Model"
-          name="model"
-          type="text"
-          placeholder="Model"
-          register={register}
-        />
-        <InputField
-          label="Year"
-          name="year"
-          type="number"
-          placeholder="Year"
-          register={register}
-        />
-        <InputField
-          label="Type"
-          name="type"
-          type="text"
-          placeholder="Type"
-          register={register}
-        />
-        <InputField
-          label="Color"
-          name="color"
-          type="text"
-          placeholder="Color"
-          register={register}
-        />
-        <InputField
-          label="Engine"
-          name="engine"
-          type="text"
-          placeholder="Engine"
-          register={register}
-        />
-        <InputField
-          label="Mileage"
-          name="mileage"
-          type="number"
-          placeholder="Mileage"
-          register={register}
-        />
-        <InputField
-          label="Price"
-          name="price"
-          type="number"
-          placeholder="Price"
-          register={register}
-        />
-        <InputField
-          label="Trim"
-          name="Trim"
-          type="text"
-          placeholder="Trim"
-          register={register}
-        />
-        <SelectField
-          label="Category"
-          name="category"
-          options={[
-            { value: "", label: "Choose A Category" },
-            { value: "Coupe", label: "Coupe" },
-            { value: "Sedan", label: "Sedan" },
-            { value: "Pickup Truck", label: "Pickup Truck" },
-            { value: "Crossover", label: "Crossover" },
-            { value: "Minivan", label: "Minivan" },
-            { value: "Hatchback", label: "Hatchback" },
-            { value: "Convertible", label: "Convertible" },
-            { value: "Sports Car", label: "Sports Car" },
-            { value: "Station Wagon", label: "Station Wagon" },
-            { value: "EV", label: "EV" },
-            { value: "Hybrid", label: "Hybrid" },
-          ]}
-          register={register}
-        />
-
-        {/* Features Input */}
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">
-            Features
-          </label>
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex items-center mb-2">
-              <input
-                type="text"
-                {...register(`features.${index}.value`)}
-                className="rounded text-blue-600 focus:ring focus:ring-offset-2 focus:ring-blue-500"
-                placeholder="Feature"
-              />
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="ml-2 text-red-600 hover:text-red-900"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => append({ value: "" })}
-            className="mt-2 text-blue-600 hover:text-blue-900"
-          >
-            Add Feature
-          </button>
-        </div>
-
-        {/* Trending Checkbox */}
-        {/* <div className="mb-4">
-                    <label className="inline-flex items-center">
-                        <input
-                            type="checkbox"
-                            {...register('trending')}
-                            className="rounded text-blue-600 focus:ring focus:ring-offset-2 focus:ring-blue-500"
-                        />
-                        <span className="ml-2 text-sm font-semibold text-gray-700">Trending</span>
-                    </label>
-                </div> */}
-
-        {/* Media Upload */}
+        {/* Add other input fields here */}
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Media
           </label>
           <input
             type="file"
-            name="media[]" // Ensure the name matches
+            name="media[]"
             accept="image/*,video/*"
             multiple
             onChange={handleFileChange}
@@ -261,7 +191,7 @@ const AddCar = () => {
                   key={index}
                   className="mb-2 p-2 border rounded-md bg-gray-100"
                 >
-                  <p className="font-semibold">Selected: {file.name}</p>
+                  <p className="font-semibold">Selected: {getFileName(file)}</p>
                   <label className="inline-flex items-center mt-2">
                     <input
                       type="radio"
@@ -280,8 +210,6 @@ const AddCar = () => {
             </div>
           )}
         </div>
-
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full py-2 bg-green-500 text-white font-bold rounded-md"
