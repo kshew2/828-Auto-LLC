@@ -89,6 +89,9 @@ const UpdateCar = () => {
     };
 
     const onSubmit = async (data) => {
+        console.log('Form Data:', data);
+        console.log('Media Files:', mediaFiles);
+    
         if (mediaFiles.length === 0) {
             const confirm = await Swal.fire({
                 title: "No Media Files",
@@ -102,16 +105,17 @@ const UpdateCar = () => {
             });
     
             if (!confirm.isConfirmed) {
+                console.log('User canceled submission.');
                 return;
             }
         }
     
         setIsLoading(true);
-    
+        console.log('Starting file uploads...');
         try {
-            // Upload files sequentially
             const uploadedMediaUrls = [];
             for (const file of mediaFiles) {
+                console.log('Uploading file:', file.name);
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary preset
@@ -126,8 +130,11 @@ const UpdateCar = () => {
                 }
     
                 const result = await response.json();
+                console.log('Uploaded file URL:', result.secure_url);
                 uploadedMediaUrls.push(result.secure_url);
             }
+    
+            console.log('All files uploaded:', uploadedMediaUrls);
     
             // Add uploaded media URLs to the form data
             const formData = new FormData();
@@ -152,7 +159,7 @@ const UpdateCar = () => {
                     formData.append(`features[${index}]`, feature.value);
                 });
     
-            // Submit the form data to your backend
+            console.log('Submitting form data to backend...');
             await updateCar({ id, formData }).unwrap();
     
             Swal.fire({
