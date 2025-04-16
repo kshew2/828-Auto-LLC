@@ -64,30 +64,28 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: (
-          <AdminRoute>
-            <DashboardLayout />
-          </AdminRoute>
-        ),
+        element:( <AdminRoute >
+            <DashboardLayout/>
+        </AdminRoute>),
         children: [
-          {
-            path: "",
-            element: <Dashboard />,
-          },
-          {
-            path: "add-new-car",
-            element: <AddCar />,
-          },
-          {
-            path: "edit-car/:id",
-            element: <UpdateCar />,
-          },
-          {
-            path: "manage-cars",
-            element: <ManageCars />,
-          },
+            {
+                path: "",
+                element: <AdminRoute><Dashboard/></AdminRoute>
+            }, 
+            {
+                path: "add-new-car",
+                element: <AdminRoute><AddCar/></AdminRoute>
+            },
+            {
+                path: "edit-car/:id",
+                element: <AdminRoute><UpdateCar/></AdminRoute>
+            },
+            {
+                path: "manage-cars",
+                element: <AdminRoute><ManageCars/></AdminRoute>
+            },
         ],
-      }
+    }
   ]);
 
   export default router;
