@@ -23,25 +23,39 @@ const createACar = async (req, res) => {
                     fileBuffer = await sharp(file.buffer).toFormat('jpeg').toBuffer();
                 }
 
+                // Compress the image (resize and adjust quality)
+                console.log('Compressing image...');
+                fileBuffer = await sharp(fileBuffer)
+                    .resize({ width: 1000 }) // Resize to a max width of 1000px
+                    .jpeg({ quality: 80 }) // Adjust JPEG quality (80 is a good balance)
+                    .toBuffer();
+
+                // Upload to Cloudinary
                 const publicId = `car_${make}_${model}_${year}_${index + 1}`;
                 const result = await new Promise((resolve, reject) => {
-                    const stream = cloudinary.uploader.upload_stream({
-                        resource_type: file.mimetype.startsWith('video') ? 'video' : 'image',
-                        public_id: publicId
-                    }, (error, result) => {
-                        if (error) {
-                            console.error('Cloudinary upload error:', error);
-                            reject(error);
-                        } else {
-                            console.log('Cloudinary upload result:', result);
-                            resolve(result);
+                    const stream = cloudinary.uploader.upload_stream(
+                        {
+                            resource_type: file.mimetype.startsWith('video') ? 'video' : 'image',
+                            public_id: publicId,
+                            use_filename: true,
+                            unique_filename: false,
+                        },
+                        (error, result) => {
+                            if (error) {
+                                console.error('Cloudinary upload error:', error);
+                                reject(error);
+                            } else {
+                                console.log('Cloudinary upload result:', result);
+                                resolve(result);
+                            }
                         }
-                    });
+                    );
                     stream.end(fileBuffer);
                 });
 
                 media.push(result.secure_url);
 
+                // Set the cover image if this is the selected index
                 if (index === Number(coverImageIndex)) {
                     coverImage = result.secure_url;
                 }
@@ -50,6 +64,7 @@ const createACar = async (req, res) => {
             console.log('No media files uploaded');
         }
 
+        // Create the new car document
         const newCar = new Car({
             price,
             make,
@@ -61,13 +76,13 @@ const createACar = async (req, res) => {
             mileage: Number(mileage),
             trim,
             category,
-            features,
+            features: features ? features.filter(feature => feature !== null && feature !== undefined) : [],
             media,
-            coverImage
+            coverImage,
         });
 
         await newCar.save();
-        res.status(201).json(newCar);
+        res.status(201).json({ message: 'Car created successfully', car: newCar });
     } catch (error) {
         console.error('Error creating car:', error.message);
         res.status(500).json({ message: 'Internal Server Error' });
