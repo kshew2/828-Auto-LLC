@@ -4,37 +4,44 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+const sharp = require('sharp');
+
 // Posting a car
 const createACar = async (req, res) => {
     try {
-        // Extracting car details from the body
         const { price, make, model, year, type, color, engine, mileage, trim, category, features, coverImageIndex } = req.body;
         const media = [];
         let coverImage = '';
 
-        // Check if files are present
         if (req.files && req.files['media[]'] && req.files['media[]'].length > 0) {
-            // Upload media to Cloudinary with custom public IDs
             for (const [index, file] of req.files['media[]'].entries()) {
-                const publicId = `car_${make}_${model}_${year}_${index + 1}`; // Generate a custom public ID
+                let fileBuffer = file.buffer;
+
+                // Convert HEIC to JPEG if necessary
+                if (file.mimetype === 'image/heic' || file.mimetype === 'image/heif') {
+                    console.log('Converting HEIC file to JPEG...');
+                    fileBuffer = await sharp(file.buffer).toFormat('jpeg').toBuffer();
+                }
+
+                const publicId = `car_${make}_${model}_${year}_${index + 1}`;
                 const result = await new Promise((resolve, reject) => {
-                    const stream = cloudinary.uploader.upload_stream({ 
+                    const stream = cloudinary.uploader.upload_stream({
                         resource_type: file.mimetype.startsWith('video') ? 'video' : 'image',
                         public_id: publicId
                     }, (error, result) => {
                         if (error) {
-                            console.error('Cloudinary upload error:', error); // Add debugging log
+                            console.error('Cloudinary upload error:', error);
                             reject(error);
                         } else {
-                            console.log('Cloudinary upload result:', result); // Add debugging log
+                            console.log('Cloudinary upload result:', result);
                             resolve(result);
                         }
                     });
-                    stream.end(file.buffer);
+                    stream.end(fileBuffer);
                 });
+
                 media.push(result.secure_url);
 
-                // Set the cover image based on the coverImageIndex
                 if (index === Number(coverImageIndex)) {
                     coverImage = result.secure_url;
                 }
@@ -51,18 +58,18 @@ const createACar = async (req, res) => {
             type,
             color,
             engine,
-            mileage: Number(mileage), // Ensure mileage is a number
+            mileage: Number(mileage),
             trim,
             category,
             features,
             media,
-            coverImage // Set the cover image URL
+            coverImage
         });
 
         await newCar.save();
         res.status(201).json(newCar);
     } catch (error) {
-        console.error('Error creating car:', error.message); // Avoid logging sensitive information
+        console.error('Error creating car:', error.message);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
@@ -104,20 +111,16 @@ const getSingleCar = async(req, res) => {
 //updating a car
 const updateCar = async (req, res) => {
     try {
-        console.log('Update request received:', req.body);
         const { id } = req.params;
         const car = await Car.findById(id);
         if (!car) {
-            console.log('Car not found:', id);
             return res.status(404).send({ message: "Car not found" });
         }
 
-        // Handle media files
         const mediaFiles = req.files && req.files['media[]'] ? req.files['media[]'] : [];
         const newMediaUrls = [];
         let coverImage = car.coverImage;
 
-        // Delete old images if new images are provided
         if (mediaFiles.length > 0) {
             for (const url of car.media) {
                 const publicId = url.split('/').pop().split('.')[0];
@@ -129,40 +132,45 @@ const updateCar = async (req, res) => {
                     }
                 });
             }
-        }
 
-        // Upload new images
-        for (const [index, file] of mediaFiles.entries()) {
-            const publicId = `car_${req.body.make}_${req.body.model}_${req.body.year}_${index + 1}`;
-            const result = await new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream({
-                    resource_type: file.mimetype.startsWith('video') ? 'video' : 'image',
-                    public_id: publicId,
-                    use_filename: true,
-                    unique_filename: false
-                }, (error, result) => {
-                    if (error) {
-                        console.error('Cloudinary upload error:', error);
-                        reject(error);
-                    } else {
-                        console.log('Cloudinary upload result:', result);
-                        resolve(result);
-                    }
+            for (const [index, file] of mediaFiles.entries()) {
+                let fileBuffer = file.buffer;
+
+                // Convert HEIC to JPEG if necessary
+                if (file.mimetype === 'image/heic' || file.mimetype === 'image/heif') {
+                    console.log('Converting HEIC file to JPEG...');
+                    fileBuffer = await sharp(file.buffer).toFormat('jpeg').toBuffer();
+                }
+
+                const publicId = `car_${req.body.make}_${req.body.model}_${req.body.year}_${index + 1}`;
+                const result = await new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream({
+                        resource_type: file.mimetype.startsWith('video') ? 'video' : 'image',
+                        public_id: publicId,
+                        use_filename: true,
+                        unique_filename: false
+                    }, (error, result) => {
+                        if (error) {
+                            console.error('Cloudinary upload error:', error);
+                            reject(error);
+                        } else {
+                            console.log('Cloudinary upload result:', result);
+                            resolve(result);
+                        }
+                    });
+                    stream.end(fileBuffer);
                 });
-                stream.end(file.buffer);
-            });
-            newMediaUrls.push(result.secure_url);
 
-            // Set the cover image based on the coverImageIndex
-            if (index === Number(req.body.coverImageIndex)) {
-                coverImage = result.secure_url;
+                newMediaUrls.push(result.secure_url);
+
+                if (index === Number(req.body.coverImageIndex)) {
+                    coverImage = result.secure_url;
+                }
             }
         }
 
-        // Extract features from the request body
         const features = req.body.features ? req.body.features.filter(feature => feature !== null && feature !== undefined) : [];
 
-        // Update car details
         const updatedCar = await Car.findByIdAndUpdate(
             id,
             {
@@ -184,7 +192,6 @@ const updateCar = async (req, res) => {
             { new: true }
         );
 
-        console.log('Car updated successfully:', updatedCar);
         res.status(200).send({
             message: "Car updated successfully",
             car: updatedCar
