@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import InputField from '../addCar/InputField';
 import SelectField from '../addCar/SelectField';
 import heic2any from 'heic2any';
+import imageCompression from 'browser-image-compression';
 
 const UpdateCar = () => {
     const { id } = useParams();
@@ -52,28 +53,41 @@ const UpdateCar = () => {
                 type: file.type,
                 size: file.size,
             });
-            if (isHEIC) {
-                try {
+    
+            try {
+                let processedFile = file;
+    
+                // Convert HEIC to PNG if necessary
+                if (isHEIC) {
                     const convertedBlob = await heic2any({
                         blob: file,
                         toType: 'image/png',
                     });
-                    const convertedFile = new File([convertedBlob], file.name.replace(/\.[^/.]+$/, '.png'), {
+                    processedFile = new File([convertedBlob], file.name.replace(/\.[^/.]+$/, '.png'), {
                         type: 'image/png',
                     });
-                    validFiles.push(convertedFile);
-                } catch (error) {
-                    console.error('Error converting HEIC to PNG:', error);
-                    alert(`Failed to convert "${file.name}" to PNG.`);
                 }
-            } else {
-                validFiles.push(file);
+    
+                // Compress the image
+                const compressedFile = await imageCompression(processedFile, {
+                    maxSizeMB: 0.2, // Target size in MB (200KB)
+                    maxWidthOrHeight: 800, // Resize to a max width/height of 800px
+                    useWebWorker: true, // Use a web worker for better performance
+                });
+    
+                console.log('Original File Size:', processedFile.size);
+                console.log('Compressed File Size:', compressedFile.size);
+    
+                validFiles.push(compressedFile);
+            } catch (error) {
+                console.error('Error processing file:', error);
+                alert(`Failed to process "${file.name}".`);
             }
         }
-
-    setMediaFiles(validFiles);
-    setValue('media', validFiles); // Update the form value for media
-};
+    
+        setMediaFiles(validFiles);
+        setValue('media', validFiles); // Update the form value for media
+    };
 
     const handleCoverImageChange = (index) => {
         setCoverImageIndex(index);
