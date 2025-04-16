@@ -135,13 +135,20 @@ const updateCar = async (req, res) => {
 
             for (const [index, file] of mediaFiles.entries()) {
                 let fileBuffer = file.buffer;
-
+            
                 // Convert HEIC to JPEG if necessary
                 if (file.mimetype === 'image/heic' || file.mimetype === 'image/heif') {
                     console.log('Converting HEIC file to JPEG...');
                     fileBuffer = await sharp(file.buffer).toFormat('jpeg').toBuffer();
                 }
-
+            
+                // Compress the image (resize and adjust quality)
+                console.log('Compressing image...');
+                fileBuffer = await sharp(fileBuffer)
+                    .resize({ width: 1200 }) // Resize to a max width of 1200px (adjust as needed)
+                    .jpeg({ quality: 80 }) // Adjust JPEG quality (80 is a good balance)
+                    .toBuffer();
+            
                 const publicId = `car_${req.body.make}_${req.body.model}_${req.body.year}_${index + 1}`;
                 const result = await new Promise((resolve, reject) => {
                     const stream = cloudinary.uploader.upload_stream({
@@ -160,9 +167,9 @@ const updateCar = async (req, res) => {
                     });
                     stream.end(fileBuffer);
                 });
-
+            
                 newMediaUrls.push(result.secure_url);
-
+            
                 if (index === Number(req.body.coverImageIndex)) {
                     coverImage = result.secure_url;
                 }
