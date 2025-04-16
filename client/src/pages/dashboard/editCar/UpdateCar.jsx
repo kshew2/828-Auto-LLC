@@ -34,8 +34,19 @@ const UpdateCar = () => {
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
-        setMediaFiles(files);
-        setValue('media', files); // Update the form value for media
+        const maxFileSize = 5 * 1024 * 1024; // 5MB
+        const validFiles = [];
+    
+        files.forEach((file) => {
+            if (file.size <= maxFileSize) {
+                validFiles.push(file);
+            } else {
+                alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+            }
+        });
+    
+        setMediaFiles(validFiles);
+        setValue('media', validFiles); // Update the form value for media
     };
 
     const handleCoverImageChange = (index) => {
