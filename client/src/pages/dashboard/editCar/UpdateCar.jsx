@@ -34,35 +34,42 @@ const UpdateCar = () => {
     }, [car, reset, setValue, replace]);
 
    
-const handleFileChange = async (e) => {
-    const files = Array.from(e.target.files);
-    const maxFileSize = 5 * 1024 * 1024; // 5MB
-    const validFiles = [];
-
-    for (const file of files) {
-        if (file.size > maxFileSize) {
-            alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
-            continue;
-        }
-
-        if (file.type === 'image/heic' || file.type === 'image/heif') {
-            try {
-                const convertedBlob = await heic2any({
-                    blob: file,
-                    toType: 'image/png',
-                });
-                const convertedFile = new File([convertedBlob], file.name.replace(/\.[^/.]+$/, '.png'), {
-                    type: 'image/png',
-                });
-                validFiles.push(convertedFile);
-            } catch (error) {
-                console.error('Error converting HEIC to PNG:', error);
-                alert(`Failed to convert "${file.name}" to PNG.`);
+    const handleFileChange = async (e) => {
+        const files = Array.from(e.target.files);
+        const maxFileSize = 5 * 1024 * 1024; // 5MB
+        const validFiles = [];
+    
+        for (const file of files) {
+            if (file.size > maxFileSize) {
+                alert(`File "${file.name}" is too large. Maximum size is 5MB.`);
+                continue;
             }
-        } else {
-            validFiles.push(file);
+    
+            // Check MIME type and file extension for HEIC/HEIF
+            const isHEIC = file.type === 'image/heic' || file.type === 'image/heif' || file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif');
+            console.log('File Details:', {
+                name: file.name,
+                type: file.type,
+                size: file.size,
+            });
+            if (isHEIC) {
+                try {
+                    const convertedBlob = await heic2any({
+                        blob: file,
+                        toType: 'image/png',
+                    });
+                    const convertedFile = new File([convertedBlob], file.name.replace(/\.[^/.]+$/, '.png'), {
+                        type: 'image/png',
+                    });
+                    validFiles.push(convertedFile);
+                } catch (error) {
+                    console.error('Error converting HEIC to PNG:', error);
+                    alert(`Failed to convert "${file.name}" to PNG.`);
+                }
+            } else {
+                validFiles.push(file);
+            }
         }
-    }
 
     setMediaFiles(validFiles);
     setValue('media', validFiles); // Update the form value for media
