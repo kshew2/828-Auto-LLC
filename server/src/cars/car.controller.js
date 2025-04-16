@@ -145,7 +145,7 @@ const updateCar = async (req, res) => {
                 // Compress the image (resize and adjust quality)
                 console.log('Compressing image...');
                 fileBuffer = await sharp(fileBuffer)
-                    .resize({ width: 1200 }) // Resize to a max width of 1200px (adjust as needed)
+                    .resize({ width: 1000 }) // Resize to a max width of 1200px (adjust as needed)
                     .jpeg({ quality: 80 }) // Adjust JPEG quality (80 is a good balance)
                     .toBuffer();
             
