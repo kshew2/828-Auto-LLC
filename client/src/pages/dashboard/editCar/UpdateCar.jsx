@@ -95,13 +95,15 @@ const UpdateCar = () => {
 
     const getFileName = (file) => {
         if (file instanceof File) {
-            return file.name;
+            return file.name; // Return the name of the File object
+        } else if (file instanceof Blob && file.name) {
+            return file.name; // Handle Blob objects with a name property
         } else if (typeof file === 'string') {
             const urlParts = file.split('/');
-            return urlParts[urlParts.length - 1];
+            return urlParts[urlParts.length - 1]; // Extract the file name from a URL
         } else {
             console.error('Invalid file type:', file);
-            return 'Unknown File';
+            return 'Unknown File'; // Fallback for unexpected types
         }
     };
 
