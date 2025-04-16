@@ -25,7 +25,7 @@ function DashboardLayout() {
   return (
     <div className="flex flex-col h-screen">
       {/* Top Navigation Bar */}
-      <div className="bg-gray-800 text-white flex items-center justify-between p-4 lg:hidden">
+      <div className="bg-gray-800 text-white flex items-center justify-between p-4 lg:hidden fixed top-0 left-0 right-0 z-50">
         <span className="font-bold text-lg">Admin Dashboard</span>
         <button
           onClick={toggleDropdown}
@@ -35,31 +35,31 @@ function DashboardLayout() {
         </button>
       </div>
 
-      {/* Horizontal Dropdown Menu for Small Screens */}
+      {/* Dropdown Menu for Small Screens */}
       {isDropdownOpen && (
-        <div className="bg-gray-800 text-white lg:hidden">
-          <ul className="flex flex-row justify-around">
-            <li className="p-2 hover:bg-gray-700">
+        <div className="bg-gray-800 text-white lg:hidden fixed top-14 left-0 right-0 z-40">
+          <ul className="flex flex-col">
+            <li className="p-4 hover:bg-gray-700">
               <Link to="/dashboard" onClick={toggleDropdown}>
                 Dashboard
               </Link>
             </li>
-            <li className="p-2 hover:bg-gray-700">
+            <li className="p-4 hover:bg-gray-700">
               <Link to="/dashboard/manage-cars" onClick={toggleDropdown}>
                 Manage Cars
               </Link>
             </li>
-            <li className="p-2 hover:bg-gray-700">
+            <li className="p-4 hover:bg-gray-700">
               <Link to="/dashboard/add-new-car" onClick={toggleDropdown}>
                 Add New Car
               </Link>
             </li>
-            <li className="p-2 hover:bg-gray-700">
+            <li className="p-4 hover:bg-gray-700">
               <Link to="/" onClick={toggleDropdown}>
                 Return to Site
               </Link>
             </li>
-            <li className="p-2 hover:bg-gray-700">
+            <li className="p-4 hover:bg-gray-700">
               <button onClick={handleLogout} className="w-full text-left">
                 Logout
               </button>
@@ -69,7 +69,7 @@ function DashboardLayout() {
       )}
 
       {/* Sidebar for Larger Screens */}
-      <div className="hidden lg:flex w-64 bg-gray-800 text-white flex-col">
+      <div className="hidden lg:flex w-64 bg-gray-800 text-white flex-col fixed top-0 left-0 h-full">
         <div className="p-4">
           <span className="font-bold text-lg">Admin Dashboard</span>
         </div>
@@ -98,7 +98,7 @@ function DashboardLayout() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto lg:ml-64 mt-14 lg:mt-0">
         <Outlet />
       </div>
     </div>
