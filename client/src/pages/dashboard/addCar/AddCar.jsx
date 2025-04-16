@@ -171,14 +171,133 @@ const AddCar = () => {
           placeholder="Make"
           register={register}
         />
-        {/* Add other input fields here */}
+        <InputField
+          label="Model"
+          name="model"
+          type="text"
+          placeholder="Model"
+          register={register}
+        />
+        <InputField
+          label="Year"
+          name="year"
+          type="number"
+          placeholder="Year"
+          register={register}
+        />
+        <InputField
+          label="Type"
+          name="type"
+          type="text"
+          placeholder="Type"
+          register={register}
+        />
+        <InputField
+          label="Color"
+          name="color"
+          type="text"
+          placeholder="Color"
+          register={register}
+        />
+        <InputField
+          label="Engine"
+          name="engine"
+          type="text"
+          placeholder="Engine"
+          register={register}
+        />
+        <InputField
+          label="Mileage"
+          name="mileage"
+          type="number"
+          placeholder="Mileage"
+          register={register}
+        />
+        <InputField
+          label="Price"
+          name="price"
+          type="number"
+          placeholder="Price"
+          register={register}
+        />
+        <InputField
+          label="Trim"
+          name="Trim"
+          type="text"
+          placeholder="Trim"
+          register={register}
+        />
+        <SelectField
+          label="Category"
+          name="category"
+          options={[
+            { value: "", label: "Choose A Category" },
+            { value: "Coupe", label: "Coupe" },
+            { value: "Sedan", label: "Sedan" },
+            { value: "Pickup Truck", label: "Pickup Truck" },
+            { value: "Crossover", label: "Crossover" },
+            { value: "Minivan", label: "Minivan" },
+            { value: "Hatchback", label: "Hatchback" },
+            { value: "Convertible", label: "Convertible" },
+            { value: "Sports Car", label: "Sports Car" },
+            { value: "Station Wagon", label: "Station Wagon" },
+            { value: "EV", label: "EV" },
+            { value: "Hybrid", label: "Hybrid" },
+          ]}
+          register={register}
+        />
+
+        {/* Features Input */}
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">
+            Features
+          </label>
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex items-center mb-2">
+              <input
+                type="text"
+                {...register(`features.${index}.value`)}
+                className="rounded text-blue-600 focus:ring focus:ring-offset-2 focus:ring-blue-500"
+                placeholder="Feature"
+              />
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="ml-2 text-red-600 hover:text-red-900"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => append({ value: "" })}
+            className="mt-2 text-blue-600 hover:text-blue-900"
+          >
+            Add Feature
+          </button>
+        </div>
+
+        {/* Trending Checkbox */}
+        {/* <div className="mb-4">
+                    <label className="inline-flex items-center">
+                        <input
+                            type="checkbox"
+                            {...register('trending')}
+                            className="rounded text-blue-600 focus:ring focus:ring-offset-2 focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm font-semibold text-gray-700">Trending</span>
+                    </label>
+                </div> */}
+
+        {/* Media Upload */}
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Media
           </label>
           <input
             type="file"
-            name="media[]"
+            name="media[]" // Ensure the name matches
             accept="image/*,video/*"
             multiple
             onChange={handleFileChange}
@@ -191,7 +310,7 @@ const AddCar = () => {
                   key={index}
                   className="mb-2 p-2 border rounded-md bg-gray-100"
                 >
-                  <p className="font-semibold">Selected: {getFileName(file)}</p>
+                  <p className="font-semibold">Selected: {file.name}</p>
                   <label className="inline-flex items-center mt-2">
                     <input
                       type="radio"
@@ -210,6 +329,8 @@ const AddCar = () => {
             </div>
           )}
         </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full py-2 bg-green-500 text-white font-bold rounded-md"
