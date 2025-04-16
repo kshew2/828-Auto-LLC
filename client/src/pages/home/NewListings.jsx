@@ -51,6 +51,34 @@ const NewListings = () => {
 
   return (
     <div className="py-10 bg-bgdark px-5">
+      {/* Inline Swiper Styles */}
+      <style>
+        {`
+          .swiper-button-prev,
+          .swiper-button-next {
+              z-index: 10; /* Ensure buttons are above the content */
+              width: auto; /* Adjust button width */
+              height: auto; /* Adjust button height */
+              transform: translateY(-50%); /* Center vertically */
+          }
+
+          .swiper-button-prev {
+              left: 10px; /* Adjust spacing from the left */
+          }
+
+          .swiper-button-next {
+              right: 10px; /* Adjust spacing from the right */
+          }
+
+          .swiper-slide {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 100%; /* Ensure slide takes full width */
+          }
+        `}
+      </style>
+
       <div className="max-w-screen-xl justify-center mx-auto items-center">
         <h2 className="text-3xl font-semibold mb-6 text-secondary font-primary">
           Newest Listings
@@ -87,7 +115,7 @@ const NewListings = () => {
           >
             {filteredCars.map((car, index) => (
               <SwiperSlide key={index} className="flex justify-center w-full">
-                <div className="w-full ">
+                <div className="w-full lg:max-w-screen-lg mx-auto flex justify-center items-center">
                   <CarCard car={car} />
                 </div>
               </SwiperSlide>

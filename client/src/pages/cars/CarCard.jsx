@@ -20,7 +20,7 @@ const CarCard = ({ car }) => {
 
   return (
     <Link to={`/cars/${car._id}`}>
-  <div className="bg-secondary w-full mx-auto rounded-lg transition-shadow duration-300 flex sm:justify-start justify-center p-4">
+  <div className="bg-secondary w-full rounded-lg transition-shadow duration-300 flex sm:justify-start justify-center p-4">
   <div className="flex sm:flex-row flex-col items-center w-full">
     {/* Image Section */}
     <div className="sm:w-1/2 w-full p-2 h-full">
