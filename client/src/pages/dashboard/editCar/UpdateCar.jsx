@@ -89,9 +89,6 @@ const UpdateCar = () => {
     };
 
     const onSubmit = async (data) => {
-        console.log('Form Data:', data);
-        console.log('Media Files:', mediaFiles);
-    
         if (mediaFiles.length === 0) {
             const confirm = await Swal.fire({
                 title: "No Media Files",
@@ -103,65 +100,36 @@ const UpdateCar = () => {
                 confirmButtonText: "Yes, continue",
                 cancelButtonText: "No, cancel"
             });
-    
+
             if (!confirm.isConfirmed) {
-                console.log('User canceled submission.');
                 return;
             }
         }
-    
         setIsLoading(true);
-        console.log('Starting file uploads...');
-        try {
-            const uploadedMediaUrls = [];
-            for (const file of mediaFiles) {
-                console.log('Uploading file:', file.name);
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('upload_preset', 'your_upload_preset'); // Replace with your Cloudinary preset
-    
-                const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`Failed to upload file: ${file.name}`);
-                }
-    
-                const result = await response.json();
-                console.log('Uploaded file URL:', result.secure_url);
-                uploadedMediaUrls.push(result.secure_url);
-            }
-    
-            console.log('All files uploaded:', uploadedMediaUrls);
-    
-            // Add uploaded media URLs to the form data
-            const formData = new FormData();
-            formData.append('price', data.price);
-            formData.append('make', data.make);
-            formData.append('model', data.model);
-            formData.append('year', data.year);
-            formData.append('type', data.type);
-            formData.append('color', data.color);
-            formData.append('engine', data.engine);
-            formData.append('mileage', data.mileage);
-            formData.append('trim', data.trim);
-            formData.append('category', data.category);
-            formData.append('status', data.status);
-            formData.append('coverImageIndex', coverImageIndex);
-            uploadedMediaUrls.forEach((url, index) => {
-                formData.append(`media[${index}]`, url);
+        const formData = new FormData();
+        formData.append('price', data.price);
+        formData.append('make', data.make);
+        formData.append('model', data.model);
+        formData.append('year', data.year);
+        formData.append('type', data.type);
+        formData.append('color', data.color);
+        formData.append('engine', data.engine);
+        formData.append('mileage', data.mileage);
+        formData.append('trim', data.trim);
+        formData.append('category', data.category);
+        formData.append('status', data.status);
+        formData.append('coverImageIndex', coverImageIndex);
+        data.features
+            .filter(feature => feature.value) // Filter out empty features
+            .forEach((feature, index) => {
+                formData.append(`features[${index}]`, feature.value);
             });
-            data.features
-                .filter(feature => feature.value)
-                .forEach((feature, index) => {
-                    formData.append(`features[${index}]`, feature.value);
-                });
-    
-            console.log('Submitting form data to backend...');
+        mediaFiles.forEach((file, index) => {
+            formData.append('media[]', file); // Use 'media[]' to match the input name
+        });
+
+        try {
             await updateCar({ id, formData }).unwrap();
-    
             Swal.fire({
                 title: "Car Updated",
                 text: "Car has been updated successfully",
