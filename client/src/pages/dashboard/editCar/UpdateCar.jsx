@@ -96,9 +96,12 @@ const UpdateCar = () => {
     const getFileName = (file) => {
         if (file instanceof File) {
             return file.name;
-        } else {
+        } else if (typeof file === 'string') {
             const urlParts = file.split('/');
             return urlParts[urlParts.length - 1];
+        } else {
+            console.error('Invalid file type:', file);
+            return 'Unknown File';
         }
     };
 
