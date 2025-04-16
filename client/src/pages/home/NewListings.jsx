@@ -87,7 +87,7 @@ const NewListings = () => {
           >
             {filteredCars.map((car, index) => (
               <SwiperSlide key={index} className="flex justify-center w-full">
-                <div className="w-full max-w-screen-xl">
+                <div className="w-full ">
                   <CarCard car={car} />
                 </div>
               </SwiperSlide>
