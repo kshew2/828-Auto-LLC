@@ -88,13 +88,13 @@ const NewListings = () => {
             {/* Arrow Buttons */}
             <button
               onClick={() => sliderRef.current?.prev()}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-secondary-accent text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8592;
             </button>
             <button
               onClick={() => sliderRef.current?.next()}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-secondary-accent text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8594;
             </button>
