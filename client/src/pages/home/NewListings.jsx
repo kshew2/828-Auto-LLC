@@ -74,11 +74,13 @@ const NewListings = () => {
         </h2>
 
         {/* Category Filtering */}
-        <div className="relative w-full max-w-xs">
+        <div className="relative w-fit">
   <select
     onChange={(e) => setSelectedCategory(e.target.value)}
     value={selectedCategory}
-    className="w-full appearance-none border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary"
+    name="category"
+    id="category"
+    className="border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary appearance-none pr-10"
   >
     {categories.map((category, index) => (
       <option key={index} value={category}>
@@ -88,7 +90,7 @@ const NewListings = () => {
   </select>
 
   {/* Down Arrow */}
-  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-700">
+  <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 text-sm">
     ▼
   </div>
 </div>
