@@ -16,7 +16,7 @@ const CarDetail = () => {
         return (
             <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 {isVideo ? (
-                    <video controls style={{ width: '100%', height: 'auto' }} className="rounded">
+                    <video controls style={{ width: '100%', height: '400px', objectFit: 'cover' }} className="rounded">
                         <source src={media} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -24,7 +24,7 @@ const CarDetail = () => {
                     <img
                         src={media}
                         alt={`${car.make} ${car.model}`}
-                        style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+                        style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                         className="rounded"
                     />
                 )}
@@ -54,7 +54,7 @@ const CarDetail = () => {
                 {/* Main Content */}
                 <div className="shadow-lg p-5 bg-secondary rounded-xl">
                     {/* Images */}
-                    <div className="flex justify-center m-0" style={{ maxHeight: '100%', overflow: 'hidden' }}>
+                    <div className="flex justify-center m-0" style={{ height: 'auto', maxHeight: '400px', overflow: 'hidden' }}>
                         {items.length > 0 ? (
                             <AliceCarousel
                                 items={items}
@@ -71,36 +71,36 @@ const CarDetail = () => {
                     </div>
                     <hr className='mb-2 text-lg font-black'></hr>
                     {/* Details and Features */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md-grid-cols-2 gap-4">
                         {/* Details */}
                         <div>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Make:</strong> {car.make || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Model:</strong> {car.model || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Year:</strong> {car.year || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Color:</strong> {car.color || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Trim:</strong> {car.trim || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
-                            <p className="text-gray-700 mb-2 sm:text-base text-base">
+                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Year:</strong> {car.year || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Color:</strong> {car.color || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Trim:</strong> {car.trim || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
+                            <p className="text-gray-700 mb-2 sm-text-base text-base">
                                 <strong>Year:</strong> {new Date(car?.createdAt).toLocaleDateString()}
                             </p>
-                            <p className="text-gray-700 sm:text-base text-base"><strong>Description:</strong> {car.model}</p>
+                            <p className="text-gray-700 sm-text-base text-base"><strong>Description:</strong> {car.model}</p>
                         </div>
 
                         {/* Features */}
                         <div>
-                            <strong className="text-gray-700 mb-2 block sm:text-base text-base">Features:</strong>
+                            <strong className="text-gray-700 mb-2 block sm-text-base text-base">Features:</strong>
                             {car.features && car.features.length > 0 ? (
                                 <ul className="list-disc ml-4 space-y-1">
                                     {car.features.map((feature, index) => (
-                                        <li key={index} className="text-gray-700 sm:text-base text-base">
+                                        <li key={index} className="text-gray-700 sm-text-base text-base">
                                             {feature || 'No feature available'}
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-gray-700 sm:text-base text-base">No features available</p>
+                                <p className="text-gray-700 sm-text-base text-base">No features available</p>
                             )}
                         </div>
                     </div>
