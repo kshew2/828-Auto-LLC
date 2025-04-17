@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import CarCard from "../cars/CarCard";
 import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
 import { useKeenSlider } from "keen-slider/react";
@@ -35,20 +35,17 @@ const NewListings = () => {
 
   const sliderRef = useRef(null);
 
-  const [sliderInstanceRef, slider] = useKeenSlider({
+  const [sliderInstanceRef, setSliderInstanceRef] = useKeenSlider({
     loop: true,
     mode: "snap",
     slides: {
       perView: 1,
       spacing: 15,
     },
+    created(s) {
+      sliderRef.current = s;
+    },
   });
-
-  useEffect(() => {
-    if (sliderRef.current) {
-      sliderRef.current = sliderInstanceRef.current;
-    }
-  }, [sliderInstanceRef]);
 
   if (!Array.isArray(filteredCars)) {
     console.error("filteredCars is not an array", filteredCars);
@@ -90,14 +87,14 @@ const NewListings = () => {
           <div className="relative">
             {/* Arrow Buttons */}
             <button
-              onClick={() => sliderInstanceRef.current?.prev()}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black px-2 py-1 rounded shadow"
+              onClick={() => sliderRef.current?.prev()}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-secondary-accent text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8592;
             </button>
             <button
-              onClick={() => sliderInstanceRef.current?.next()}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black px-2 py-1 rounded shadow"
+              onClick={() => sliderRef.current?.next()}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-secondary-accent text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8594;
             </button>
