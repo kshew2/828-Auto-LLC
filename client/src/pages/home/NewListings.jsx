@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CarCard from "../cars/CarCard";
 import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
 import { useKeenSlider } from "keen-slider/react";
@@ -28,33 +28,36 @@ const NewListings = () => {
   const filteredCars =
     selectedCategory === "Choose a Type"
       ? cars
-      : cars.filter((car) => car.category.toLowerCase() === selectedCategory.toLowerCase());
+      : cars.filter(
+          (car) =>
+            car.category?.toLowerCase() === selectedCategory.toLowerCase()
+        );
 
-  const [sliderRef] = useKeenSlider({
-    loop: true,
-    mode: "snap",
-    slides: {
-      perView: 1,
-      spacing: 15,
-    },
-  });
+  const [sliderRef, slider] = useKeenSlider(
+    {
+      loop: true,
+      mode: "snap",
+      slides: {
+        perView: 1,
+        spacing: 15,
+      },
+      breakpoints: {
+        "(min-width: 768px)": {
+          slides: { perView: 2, spacing: 15 },
+        },
+        "(min-width: 1024px)": {
+          slides: { perView: 3, spacing: 20 },
+        },
+      },
+    }
+  );
 
-  if (!Array.isArray(filteredCars)) {
-    console.error("filteredCars is not an array", filteredCars);
-    return <p>Error: Invalid data structure</p>;
-  }
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error loading cars: {error.message}</p>;
-  }
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading cars: {error.message}</p>;
 
   return (
     <div className="py-10 bg-bgdark px-5">
-      <div className="max-w-screen-xl justify-center mx-auto items-center">
+      <div className="max-w-screen-xl mx-auto">
         <h2 className="text-3xl font-semibold mb-6 text-secondary font-primary">
           Newest Listings
         </h2>
@@ -81,12 +84,34 @@ const NewListings = () => {
             No cars of this choice
           </p>
         ) : (
-          <div ref={sliderRef} className="keen-slider w-full">
-            {filteredCars.map((car, index) => (
-              <div className="keen-slider__slide px-2" key={index}>
-                <CarCard car={car} />
-              </div>
-            ))}
+          <div className="relative">
+            {/* Arrow Controls */}
+            <button
+              onClick={() => slider.current?.prev()}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 text-white px-3 py-2 rounded-full shadow-md hover:bg-gray-600"
+            >
+              ‹
+            </button>
+            <button
+              onClick={() => slider.current?.next()}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 text-white px-3 py-2 rounded-full shadow-md hover:bg-gray-600"
+            >
+              ›
+            </button>
+
+            {/* Carousel */}
+            <div ref={sliderRef} className="keen-slider overflow-hidden">
+              {filteredCars.map((car, index) => (
+                <div
+                  key={index}
+                  className="keen-slider__slide flex justify-center px-2"
+                >
+                  <div className="w-full max-w-sm">
+                    <CarCard car={car} />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
