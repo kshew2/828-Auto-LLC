@@ -21,6 +21,8 @@ const categories = [
 
 const NewListings = () => {
   const [selectedCategory, setSelectedCategory] = useState("Choose a Type");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [totalSlides, setTotalSlides] = useState(0);
 
   const { data, error, isLoading } = useFetchAllCarsQuery();
   const cars = data?.cars || [];
@@ -35,15 +37,19 @@ const NewListings = () => {
 
   const sliderRef = useRef(null);
 
-  const [sliderInstanceRef, setSliderInstanceRef] = useKeenSlider({
+  const [sliderInstanceRef] = useKeenSlider({
     loop: true,
     mode: "snap",
     slides: {
       perView: 1,
       spacing: 15,
     },
-    created(s) {
-      sliderRef.current = s;
+    created(slider) {
+      sliderRef.current = slider;
+      setTotalSlides(slider.track.details.slides.length);
+    },
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
     },
   });
 
@@ -85,25 +91,41 @@ const NewListings = () => {
           </p>
         ) : (
           <div className="relative">
-            {/* Arrow Buttons */}
+            {/* Arrow Buttons - hidden on small screens */}
             <button
               onClick={() => sliderRef.current?.prev()}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
+              className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-300 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8592;
             </button>
             <button
               onClick={() => sliderRef.current?.next()}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-100 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
+              className="hidden md:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-300 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8594;
             </button>
 
+            {/* Carousel */}
             <div ref={sliderInstanceRef} className="keen-slider w-full">
               {filteredCars.map((car, index) => (
                 <div className="keen-slider__slide px-2" key={index}>
                   <CarCard car={car} />
                 </div>
+              ))}
+            </div>
+
+            {/* Dots Navigation */}
+            <div className="flex justify-center mt-4 gap-2">
+              {Array.from({ length: totalSlides }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => sliderRef.current?.moveToIdx(idx)}
+                  className={`w-3 h-3 rounded-full ${
+                    currentSlide === idx
+                      ? "bg-secondary"
+                      : "bg-gray-400"
+                  } transition duration-300`}
+                />
               ))}
             </div>
           </div>
