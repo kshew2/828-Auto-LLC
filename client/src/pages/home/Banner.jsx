@@ -4,23 +4,23 @@ import { Link } from "react-router-dom";
 
 export const Banner = () => {
   return (
-    <div className="w-full bg-bgdark">
+    <div className="bg-bgdark">
       <div
-        className="w-full h-[70vh] sm:h-[80vh] xl:h-[90vh] bg-cover bg-center bg-no-repeat flex items-center justify-center px-4 sm:px-8"
+        className="flex h-[60vh] md:h-[70vh] xl:h-[75vh] w-full bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${bannerIMG})` }}
       >
-        <div className="bg-black/50 p-6 sm:p-10 rounded-xl text-center max-w-4xl mx-auto">
-          <h1 className="text-white text-3xl sm:text-5xl xl:text-6xl font-bold font-primary mb-4">
+        <div className="flex flex-col items-center justify-center w-10/12 md:w-8/12 mx-auto text-center text-white space-y-4">
+          <h1 className="text-3xl md:text-5xl xl:text-6xl font-semibold font-primary">
             Welcome to 828 AUTO LLC
           </h1>
-          <p className="text-white text-base sm:text-lg xl:text-xl mb-6 font-primary">
-            Find your dream car among our wide selection of vehicles.
+          <p className="text-sm md:text-lg xl:text-xl font-primary">
+            FIND YOUR DREAM CAR AMONG OUR WIDE SELECTION OF VEHICLES
           </p>
           <Link
             to="/allinventory"
-            className="inline-block bg-primary hover:bg-primary/90 transition px-6 py-3 rounded-3xl text-secondary font-secondary text-sm sm:text-base"
+            className="btn bg-primary px-6 py-3 rounded-3xl text-secondary font-secondary font-light"
           >
-            View Inventory
+            All Inventory
           </Link>
         </div>
       </div>
