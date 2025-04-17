@@ -74,7 +74,7 @@ const NewListings = () => {
         </h2>
 
         {/* Category Filtering */}
-        <div className="relative w-fit">
+        <div className="relative w-fit mb-5">
   <select
     onChange={(e) => setSelectedCategory(e.target.value)}
     value={selectedCategory}
