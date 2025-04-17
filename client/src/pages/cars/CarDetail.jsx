@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFetchCarByIdQuery } from '../../redux/features/cars/carsApi';
 import AliceCarousel from 'react-alice-carousel';
@@ -7,64 +7,43 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 const CarDetail = () => {
     const { id } = useParams();
     const { data: car, isLoading, isError } = useFetchCarByIdQuery(id);
+    const carouselRef = useRef(null);
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error trying to load car info</div>;
 
-    const items = car.media && car.media.length > 0 ? car.media.map((media, index) => {
-        const isVideo = media.endsWith('.mp4') || media.endsWith('.webm') || media.endsWith('.ogg');
-        return (
-            <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                {isVideo ? (
-                    <video controls style={{ width: '100%', height: '400px', objectFit: 'cover' }} className="rounded">
-                        <source src={media} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                ) : (
-                    <img
-                        src={media}
-                        alt={`${car.make} ${car.model}`}
-                        style={{ width: '100%', height: '400px', objectFit: 'cover' }}
-                        className="rounded"
-                    />
-                )}
-            </div>
-        );
-    }) : [];
+    const items = car.media && car.media.length > 0
+        ? car.media.map((media, index) => {
+            const isVideo = media.endsWith('.mp4') || media.endsWith('.webm') || media.endsWith('.ogg');
+            return (
+                <div
+                    key={index}
+                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
+                >
+                    {isVideo ? (
+                        <video
+                            controls
+                            style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+                            className="rounded"
+                        >
+                            <source src={media} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    ) : (
+                        <img
+                            src={media}
+                            alt={`${car.make} ${car.model}`}
+                            style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+                            className="rounded"
+                        />
+                    )}
+                </div>
+            );
+        })
+        : [];
 
     return (
         <div className="flex justify-center items-center p-10 min-h-screen bg-bgdark">
-            <style>
-                {`
-                .custom-nav-btn {
-                    font-size: 2rem;
-                    padding: 5px;
-                    margin: 0;
-                    cursor: pointer;
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    z-index: 10;
-                }
-
-                .alice-carousel__prev-btn {
-                    left: 10px;
-                }
-
-                .alice-carousel__next-btn {
-                    right: 10px;
-                }
-
-                .scroll-bar-container {
-                    max-height: 400px;
-                    overflow-x: scroll;
-                    overflow-y: hidden;
-                    white-space: nowrap;
-                    display: flex;
-                    justify-content: center;
-                }
-                `}
-            </style>
             <div className="max-w-2xl w-full">
                 {/* Title */}
                 <div className="text-center mb-2">
@@ -75,23 +54,44 @@ const CarDetail = () => {
 
                 {/* Main Content */}
                 <div className="shadow-lg p-5 bg-secondary rounded-xl">
-                    {/* Images with Scrollbar and Controls */}
-                    <div className="scroll-bar-container">
+                    {/* Carousel */}
+                    <div className="mb-4">
                         {items.length > 0 ? (
                             <AliceCarousel
+                                ref={carouselRef}
                                 items={items}
                                 autoPlay
                                 autoPlayInterval={3000}
                                 infinite
-                                disableDotsControls={false}
-                                renderPrevButton={() => <button className="alice-carousel__prev-btn custom-nav-btn">‹</button>}
-                                renderNextButton={() => <button className="alice-carousel__next-btn custom-nav-btn">›</button>}
+                                disableDotsControls={true}
+                                disableButtonsControls={true}
                             />
                         ) : (
                             <p>No media available</p>
                         )}
                     </div>
-                    <hr className='mb-2 text-lg font-black'></hr>
+
+                    {/* Custom arrows under carousel */}
+                    {items.length > 1 && (
+                        <div className="flex justify-center items-center gap-6 mb-4">
+                            <button
+                                onClick={() => carouselRef.current?.slidePrev()}
+                                className="text-3xl font-bold text-gray-700 hover:text-primary transition"
+                            >
+                                ‹
+                            </button>
+                            <button
+                                onClick={() => carouselRef.current?.slideNext()}
+                                className="text-3xl font-bold text-gray-700 hover:text-primary transition"
+                            >
+                                ›
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Horizontal Line */}
+                    <hr className="border-gray-300 mb-4" />
+
                     {/* Details and Features */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Details */}
@@ -105,7 +105,7 @@ const CarDetail = () => {
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
                             <p className="text-gray-700 mb-2 sm:text-base text-base">
-                                <strong>Year:</strong> {new Date(car?.createdAt).toLocaleDateString()}
+                                <strong>Posted:</strong> {new Date(car?.createdAt).toLocaleDateString()}
                             </p>
                             <p className="text-gray-700 sm:text-base text-base"><strong>Description:</strong> {car.model}</p>
                         </div>
