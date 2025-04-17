@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CarCard from "../cars/CarCard";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
 
 const categories = [
   "Choose a Type",
@@ -27,14 +24,20 @@ const NewListings = () => {
 
   const { data, error, isLoading } = useFetchAllCarsQuery();
   const cars = data?.cars || [];
-  console.log(cars);
 
   const filteredCars =
     selectedCategory === "Choose a Type"
       ? cars
       : cars.filter((car) => car.category.toLowerCase() === selectedCategory.toLowerCase());
 
-  console.log("Filtered Cars:", filteredCars);
+  const [sliderRef] = useKeenSlider({
+    loop: true,
+    mode: "snap",
+    slides: {
+      perView: 1,
+      spacing: 15,
+    },
+  });
 
   if (!Array.isArray(filteredCars)) {
     console.error("filteredCars is not an array", filteredCars);
@@ -48,17 +51,7 @@ const NewListings = () => {
   if (error) {
     return <p>Error loading cars: {error.message}</p>;
   }
-{
-  `<style>
-  .swiper {
-  width: 100%;
-}
-.swiper-slide {
-  width: 100% !important;
-}
-  </style>
-`
-}
+
   return (
     <div className="py-10 bg-bgdark px-5">
       <div className="max-w-screen-xl justify-center mx-auto items-center">
@@ -81,29 +74,20 @@ const NewListings = () => {
             ))}
           </select>
         </div>
-        {/* Show message if no cars match the selected category */}
+
+        {/* No cars message */}
         {filteredCars.length === 0 ? (
           <p className="text-lg text-secondary font-medium text-center mt-10 h-full p-48">
             No cars of this choice
           </p>
         ) : (
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={10}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            className="car-carousel bg-bgdark w-full"
-          >
+          <div ref={sliderRef} className="keen-slider w-full">
             {filteredCars.map((car, index) => (
-              <SwiperSlide key={index} className="!w-full px-2">
-              <div className="w-full">
+              <div className="keen-slider__slide px-2" key={index}>
                 <CarCard car={car} />
               </div>
-            </SwiperSlide>
-            
             ))}
-          </Swiper>
+          </div>
         )}
       </div>
     </div>
