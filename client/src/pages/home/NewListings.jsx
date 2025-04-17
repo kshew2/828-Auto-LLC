@@ -84,7 +84,7 @@ const NewListings = () => {
           >
             {categories.map((category, index) => (
               <option key={index} value={category}>
-                {category}
+                {category + "&#129171;"}
               </option>
             ))}
           </select>
