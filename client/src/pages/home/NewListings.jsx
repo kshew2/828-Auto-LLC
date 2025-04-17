@@ -48,7 +48,17 @@ const NewListings = () => {
   if (error) {
     return <p>Error loading cars: {error.message}</p>;
   }
-
+{
+  `<style>
+  .swiper {
+  width: 100%;
+}
+.swiper-slide {
+  width: 100% !important;
+}
+  </style>
+`
+}
   return (
     <div className="py-10 bg-bgdark px-5">
       <div className="max-w-screen-xl justify-center mx-auto items-center">
@@ -86,11 +96,12 @@ const NewListings = () => {
             className="car-carousel bg-bgdark w-full"
           >
             {filteredCars.map((car, index) => (
-              <SwiperSlide key={index} className="flex justify-center w-full">
-                <div className="w-full max-w-screen-xl">
-                  <CarCard car={car} />
-                </div>
-              </SwiperSlide>
+              <SwiperSlide key={index} className="!w-full px-2">
+              <div className="w-full">
+                <CarCard car={car} />
+              </div>
+            </SwiperSlide>
+            
             ))}
           </Swiper>
         )}
