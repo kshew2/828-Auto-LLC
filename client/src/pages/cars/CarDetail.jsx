@@ -14,9 +14,9 @@ const CarDetail = () => {
     const items = car.media && car.media.length > 0 ? car.media.map((media, index) => {
         const isVideo = media.endsWith('.mp4') || media.endsWith('.webm') || media.endsWith('.ogg');
         return (
-            <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '500px', margin: '0rem' }}>
+            <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
                 {isVideo ? (
-                    <video controls style={{ maxHeight: '100%', maxWidth: '100%' }} className="rounded">
+                    <video controls style={{ height: '100%', width: '100%' }} className="rounded">
                         <source src={media} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -24,7 +24,7 @@ const CarDetail = () => {
                     <img
                         src={media}
                         alt={`${car.make} ${car.model}`}
-                        style={{ maxHeight: '100%', maxWidth: '100%' }}
+                        style={{ height: '100%', width: '100%', objectFit: 'cover' }}
                         className="rounded"
                     />
                 )}
