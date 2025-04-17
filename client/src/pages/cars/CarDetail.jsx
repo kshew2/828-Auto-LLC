@@ -38,8 +38,30 @@ const CarDetail = () => {
                 {`
                 .custom-nav-btn {
                     font-size: 2rem;
-                    padding: 1px;
+                    padding: 5px;
                     margin: 0;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 10;
+                }
+
+                .alice-carousel__prev-btn {
+                    left: 10px;
+                }
+
+                .alice-carousel__next-btn {
+                    right: 10px;
+                }
+
+                .scroll-bar-container {
+                    max-height: 400px;
+                    overflow-x: scroll;
+                    overflow-y: hidden;
+                    white-space: nowrap;
+                    display: flex;
+                    justify-content: center;
                 }
                 `}
             </style>
@@ -53,15 +75,15 @@ const CarDetail = () => {
 
                 {/* Main Content */}
                 <div className="shadow-lg p-5 bg-secondary rounded-xl">
-                    {/* Images */}
-                    <div className="flex justify-center m-0" style={{ height: 'auto', maxHeight: '400px', overflow: 'hidden' }}>
+                    {/* Images with Scrollbar and Controls */}
+                    <div className="scroll-bar-container">
                         {items.length > 0 ? (
                             <AliceCarousel
                                 items={items}
                                 autoPlay
                                 autoPlayInterval={3000}
                                 infinite
-                                disableDotsControls
+                                disableDotsControls={false}
                                 renderPrevButton={() => <button className="alice-carousel__prev-btn custom-nav-btn">‹</button>}
                                 renderNextButton={() => <button className="alice-carousel__next-btn custom-nav-btn">›</button>}
                             />
@@ -71,36 +93,36 @@ const CarDetail = () => {
                     </div>
                     <hr className='mb-2 text-lg font-black'></hr>
                     {/* Details and Features */}
-                    <div className="grid grid-cols-1 md-grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Details */}
                         <div>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Make:</strong> {car.make || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Model:</strong> {car.model || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Year:</strong> {car.year || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Color:</strong> {car.color || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Trim:</strong> {car.trim || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm-text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
-                            <p className="text-gray-700 mb-2 sm-text-base text-base">
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Year:</strong> {car.year || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Color:</strong> {car.color || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Trim:</strong> {car.trim || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
+                            <p className="text-gray-700 mb-2 sm:text-base text-base">
                                 <strong>Year:</strong> {new Date(car?.createdAt).toLocaleDateString()}
                             </p>
-                            <p className="text-gray-700 sm-text-base text-base"><strong>Description:</strong> {car.model}</p>
+                            <p className="text-gray-700 sm:text-base text-base"><strong>Description:</strong> {car.model}</p>
                         </div>
 
                         {/* Features */}
                         <div>
-                            <strong className="text-gray-700 mb-2 block sm-text-base text-base">Features:</strong>
+                            <strong className="text-gray-700 mb-2 block sm:text-base text-base">Features:</strong>
                             {car.features && car.features.length > 0 ? (
                                 <ul className="list-disc ml-4 space-y-1">
                                     {car.features.map((feature, index) => (
-                                        <li key={index} className="text-gray-700 sm-text-base text-base">
+                                        <li key={index} className="text-gray-700 sm:text-base text-base">
                                             {feature || 'No feature available'}
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-gray-700 sm-text-base text-base">No features available</p>
+                                <p className="text-gray-700 sm:text-base text-base">No features available</p>
                             )}
                         </div>
                     </div>
