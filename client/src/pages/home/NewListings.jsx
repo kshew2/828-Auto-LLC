@@ -33,14 +33,16 @@ const NewListings = () => {
             car.category.toLowerCase() === selectedCategory.toLowerCase()
         );
 
-  const [sliderRef, instanceRef] = useKeenSlider({
-    loop: true,
-    slides: {
-      perView: 1,
-      spacing: 0,
-    },
-  });
-
+        const [sliderRef, instanceRef] = useKeenSlider({
+          loop: true,
+          mode: "snap",
+          slides: {
+            perView: 1,
+            spacing: 0,
+            origin: "center",
+          },
+        });
+        
   if (!Array.isArray(filteredCars)) {
     console.error("filteredCars is not an array", filteredCars);
     return <p>Error: Invalid data structure</p>;
@@ -79,34 +81,35 @@ const NewListings = () => {
 
         {/* No cars message */}
         {filteredCars.length === 0 ? (
-          <p className="text-lg text-secondary font-medium text-center mt-10 h-full p-48">
-            No cars of this choice
-          </p>
-        ) : (
-          <div className="relative">
-            <div ref={sliderRef} className="keen-slider w-full overflow-hidden">
-              {filteredCars.map((car, index) => (
-                <div className="keen-slider__slide" key={index}>
-                  <CarCard car={car} />
-                </div>
-              ))}
-            </div>
+  <p className="text-lg text-secondary font-medium text-center mt-10 h-full p-48">
+    No cars of this choice
+  </p>
+) : (
+  <div className="relative">
+    <div ref={sliderRef} className="keen-slider w-full overflow-hidden">
+      {filteredCars.map((car, index) => (
+        <div className="keen-slider__slide w-full" key={index}>
+          <CarCard car={car} />
+        </div>
+      ))}
+    </div>
 
-            {/* Navigation Buttons */}
-            <button
-              onClick={() => instanceRef.current?.prev()}
-              className="absolute top-1/2 left-2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-80"
-            >
-              <ArrowLeft className="text-white w-5 h-5" />
-            </button>
-            <button
-              onClick={() => instanceRef.current?.next()}
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-80"
-            >
-              <ArrowRight className="text-white w-5 h-5" />
-            </button>
-          </div>
-        )}
+    {/* Navigation Buttons */}
+    <button
+      onClick={() => instanceRef.current?.prev()}
+      className="absolute top-1/2 left-2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-80"
+    >
+      <ArrowLeft className="text-white w-5 h-5" />
+    </button>
+    <button
+      onClick={() => instanceRef.current?.next()}
+      className="absolute top-1/2 right-2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-80"
+    >
+      <ArrowRight className="text-white w-5 h-5" />
+    </button>
+  </div>
+)}
+
       </div>
     </div>
   );
