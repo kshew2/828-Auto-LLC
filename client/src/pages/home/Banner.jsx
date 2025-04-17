@@ -10,7 +10,7 @@ export const Banner = () => {
         style={{ backgroundImage: `url(${bannerIMG})` }}
       >
         <div className="flex flex-col items-center justify-center w-10/12 md:w-8/12 mx-auto text-center text-white space-y-4">
-          <h1 className="text-3xl md:text-5xl xl:text-6xl font-semibold font-primary">
+          <h1 className="text-3xl md:text-5xl xl:text-7xl font-semibold font-primary">
             Welcome to 828 AUTO LLC
           </h1>
           <p className="text-sm md:text-lg xl:text-xl font-primary">
