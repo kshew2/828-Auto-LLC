@@ -20,7 +20,7 @@ const CarCard = ({ car }) => {
 
   return (
     <Link to={`/cars/${car._id}`}>
-  <div className="bg-secondary w-full rounded-lg transition-shadow duration-300 flex sm:justify-start justify-center p-4">
+  <div className="bg-secondary w-full rounded-lg transition-shadow duration-300 flex sm:justify-start justify-center p-2">
   <div className="flex sm:flex-row flex-col items-center w-full">
     {/* Image Section */}
     <div className="sm:w-1/2 w-full p-2 h-full">
@@ -30,7 +30,7 @@ const CarCard = ({ car }) => {
     </div>
 
     {/* Details Section */}
-    <div className="sm:w-1/2 w-full p-4 text-left self-start">
+    <div className="sm:w-1/2 w-full p-2 text-left self-start">
       <h3 className="text-2xl lg:text-3xl text-bgdark font-secondary font-semibold hover:text-secondary-accent mb-4">
         {car.year} {car.make} {car.model}
       </h3>
