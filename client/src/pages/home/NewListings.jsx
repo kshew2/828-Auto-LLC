@@ -55,7 +55,7 @@ const NewListings = () => {
             setCurrentSlide(slider.track.details.rel);
           },
         }
-      : null // disables slider
+      : null
   );
 
   if (!Array.isArray(filteredCars)) {
@@ -73,42 +73,46 @@ const NewListings = () => {
           Newest Listings
         </h2>
 
-        {/* Category Filtering */}
+        {/* Category Dropdown */}
         <div className="relative w-fit mb-8">
-  <select
-    onChange={(e) => setSelectedCategory(e.target.value)}
-    value={selectedCategory}
-    name="category"
-    id="category"
-    className="border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary appearance-none pr-10"
-  >
-    {categories.map((category, index) => (
-      <option key={index} value={category}>
-        {category}
-      </option>
-    ))}
-  </select>
+          <select
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            value={selectedCategory}
+            name="category"
+            id="category"
+            className="border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary appearance-none pr-10"
+          >
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
 
-  {/* Down Arrow */}
-  <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 text-sm">
-    ▼
-  </div>
-</div>
+          {/* Down arrow */}
+          <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 text-sm">
+            ▼
+          </div>
+        </div>
 
-        {/* No cars message */}
+        {/* Content */}
         {filteredCars.length === 0 ? (
           <p className="text-lg text-secondary font-medium text-center mt-10 h-full p-48">
             No cars of this choice
           </p>
         ) : filteredCars.length === 1 ? (
-          // Just one car, no slider
-          <div className="w-full flex justify-center">
-            <CarCard car={filteredCars[0]} />
+          // Single card styled to match slider layout
+          <div className="relative w-full">
+            <div className="keen-slider w-full">
+              <div className="keen-slider__slide px-2">
+                <CarCard car={filteredCars[0]} />
+              </div>
+            </div>
           </div>
         ) : (
-          // Multiple cars, show slider
+          // Slider with multiple cars
           <div className="relative">
-            {/* Arrows - hidden on small screens */}
+            {/* Navigation Arrows */}
             <button
               onClick={() => sliderRef.current?.prev()}
               className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
