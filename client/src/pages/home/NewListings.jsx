@@ -3,7 +3,6 @@ import CarCard from "../cars/CarCard";
 import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import { ArrowLeft, ArrowRight } from "lucide-react"; // Optional: icon library
 
 const categories = [
   "Choose a Type",
@@ -17,10 +16,12 @@ const categories = [
   "Sports Car",
   "EV",
   "Hybrid",
+  "Minivan",
 ];
 
 const NewListings = () => {
   const [selectedCategory, setSelectedCategory] = useState("Choose a Type");
+
   const { data, error, isLoading } = useFetchAllCarsQuery();
   const cars = data?.cars || [];
 
@@ -29,29 +30,30 @@ const NewListings = () => {
       ? cars
       : cars.filter(
           (car) =>
-            car.category.toLowerCase() === selectedCategory.toLowerCase()
+            car.category?.toLowerCase() === selectedCategory.toLowerCase()
         );
 
-  const [sliderRef, instanceRef] = useKeenSlider(
+  const [sliderRef, slider] = useKeenSlider(
     {
       loop: true,
       mode: "snap",
-      slides: { perView: 1, spacing: 15 },
+      slides: {
+        perView: 1,
+        spacing: 15,
+      },
+      breakpoints: {
+        "(min-width: 768px)": {
+          slides: { perView: 2, spacing: 15 },
+        },
+        "(min-width: 1024px)": {
+          slides: { perView: 3, spacing: 20 },
+        },
+      },
     }
   );
 
-  if (!Array.isArray(filteredCars)) {
-    console.error("filteredCars is not an array", filteredCars);
-    return <p>Error: Invalid data structure</p>;
-  }
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error loading cars: {error.message}</p>;
-  }
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading cars: {error.message}</p>;
 
   return (
     <div className="py-10 bg-bgdark px-5">
@@ -60,10 +62,12 @@ const NewListings = () => {
           Newest Listings
         </h2>
 
-        {/* Category Dropdown */}
+        {/* Category Filtering */}
         <div className="mb-8 flex items-center">
           <select
             onChange={(e) => setSelectedCategory(e.target.value)}
+            name="category"
+            id="category"
             className="border bg-[#EAEAEA] border-gray-300 rounded-md px-4 py-2 focus:outline-none"
           >
             {categories.map((category, index) => (
@@ -74,38 +78,40 @@ const NewListings = () => {
           </select>
         </div>
 
-        {/* No Cars Message */}
+        {/* No cars message */}
         {filteredCars.length === 0 ? (
           <p className="text-lg text-secondary font-medium text-center mt-10 h-full p-48">
             No cars of this choice
           </p>
         ) : (
-          <div className="relative w-full">
-            <div ref={sliderRef} className="keen-slider w-full overflow-hidden">
+          <div className="relative">
+            {/* Arrow Controls */}
+            <button
+              onClick={() => slider.current?.prev()}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 text-white px-3 py-2 rounded-full shadow-md hover:bg-gray-600"
+            >
+              ‹
+            </button>
+            <button
+              onClick={() => slider.current?.next()}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 text-white px-3 py-2 rounded-full shadow-md hover:bg-gray-600"
+            >
+              ›
+            </button>
+
+            {/* Carousel */}
+            <div ref={sliderRef} className="keen-slider overflow-hidden">
               {filteredCars.map((car, index) => (
-                <div className="keen-slider__slide p-0" key={index}>
-                  <CarCard car={car} />
+                <div
+                  key={index}
+                  className="keen-slider__slide flex justify-center px-2"
+                >
+                  <div className="w-full max-w-sm">
+                    <CarCard car={car} />
+                  </div>
                 </div>
               ))}
             </div>
-
-            {/* Arrow Controls */}
-            {instanceRef.current && (
-              <>
-                <button
-                  onClick={() => instanceRef.current?.prev()}
-                  className="absolute top-1/2 -left-5 transform -translate-y-1/2 bg-white text-black shadow-md hover:bg-gray-100 p-2 rounded-full z-10"
-                >
-                  <ArrowLeft size={20} />
-                </button>
-                <button
-                  onClick={() => instanceRef.current?.next()}
-                  className="absolute top-1/2 -right-5 transform -translate-y-1/2 bg-white text-black shadow-md hover:bg-gray-100 p-2 rounded-full z-10"
-                >
-                  <ArrowRight size={20} />
-                </button>
-              </>
-            )}
           </div>
         )}
       </div>
