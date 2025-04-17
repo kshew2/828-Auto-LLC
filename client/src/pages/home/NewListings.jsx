@@ -74,21 +74,24 @@ const NewListings = () => {
         </h2>
 
         {/* Category Filtering */}
-        <div className="mb-8 flex items-center">
-          <select
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            value={selectedCategory}
-            name="category"
-            id="category"
-            className="border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary appearance-none"
-          >
-            {categories.map((category, index) => (
-              <option key={index} value={category}>
-                {category + "&#129171;"}
-              </option>
-            ))}
-          </select>
-        </div>
+        <div className="relative w-full max-w-xs">
+  <select
+    onChange={(e) => setSelectedCategory(e.target.value)}
+    value={selectedCategory}
+    className="w-full appearance-none border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary"
+  >
+    {categories.map((category, index) => (
+      <option key={index} value={category}>
+        {category}
+      </option>
+    ))}
+  </select>
+
+  {/* Down Arrow */}
+  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-700">
+    ▼
+  </div>
+</div>
 
         {/* No cars message */}
         {filteredCars.length === 0 ? (
