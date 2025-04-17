@@ -43,7 +43,7 @@ const CarDetail = () => {
         : [];
 
     return (
-        <div className="flex justify-center items-center p-10 min-h-screen bg-bgdark">
+        <div className="flex justify-center items-center p-4 min-h-screen bg-bgdark">
             <div className="max-w-2xl w-full">
                 {/* Title */}
                 <div className="text-center mb-2">
