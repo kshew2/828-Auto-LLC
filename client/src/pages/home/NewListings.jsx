@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CarCard from "../cars/CarCard";
 import { useFetchAllCarsQuery } from "../../redux/features/cars/carsApi";
 import { useKeenSlider } from "keen-slider/react";
@@ -16,13 +16,12 @@ const categories = [
   "Sports Car",
   "EV",
   "Hybrid",
-  "Minivan",
 ];
 
 const NewListings = () => {
   const [selectedCategory, setSelectedCategory] = useState("Choose a Type");
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [totalSlides, setTotalSlides] = useState(0);
+  const sliderRef = useRef(null);
 
   const { data, error, isLoading } = useFetchAllCarsQuery();
   const cars = data?.cars || [];
@@ -32,26 +31,27 @@ const NewListings = () => {
       ? cars
       : cars.filter(
           (car) =>
-            car.category.toLowerCase() === selectedCategory.toLowerCase()
+            car.category?.toLowerCase() === selectedCategory.toLowerCase()
         );
 
-  const sliderRef = useRef(null);
+  const [sliderInstanceRef, instance] = useKeenSlider(
+    {
+      loop: true,
+      mode: "snap",
+      slides: {
+        perView: 1,
+        spacing: 15,
+      },
+      slideChanged(slider) {
+        setCurrentSlide(slider.track.details.rel);
+      },
+    },
+    [filteredCars.length > 1]
+  );
 
-  const [sliderInstanceRef] = useKeenSlider({
-    loop: true,
-    mode: "snap",
-    slides: {
-      perView: 1,
-      spacing: 15,
-    },
-    created(slider) {
-      sliderRef.current = slider;
-      setTotalSlides(slider.track.details.slides.length);
-    },
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
-  });
+  useEffect(() => {
+    sliderRef.current = instance.current;
+  }, [instance]);
 
   if (!Array.isArray(filteredCars)) {
     console.error("filteredCars is not an array", filteredCars);
@@ -63,7 +63,7 @@ const NewListings = () => {
 
   return (
     <div className="py-10 bg-bgdark px-5">
-      <div className="max-w-screen-xl justify-center mx-auto items-center relative">
+      <div className="max-w-screen-xl justify-center mx-auto items-center">
         <h2 className="text-3xl font-semibold mb-6 text-secondary font-primary">
           Newest Listings
         </h2>
@@ -72,9 +72,10 @@ const NewListings = () => {
         <div className="mb-8 flex items-center">
           <select
             onChange={(e) => setSelectedCategory(e.target.value)}
+            value={selectedCategory}
             name="category"
             id="category"
-            className="border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary appearance-none"
+            className="border bg-[#EAEAEA] border-gray-300 rounded-md px-4 py-2 focus:outline-none"
           >
             {categories.map((category, index) => (
               <option key={index} value={category}>
@@ -84,14 +85,20 @@ const NewListings = () => {
           </select>
         </div>
 
-        {/* No cars message */}
+        {/* No Cars Message */}
         {filteredCars.length === 0 ? (
           <p className="text-lg text-secondary font-medium text-center mt-10 h-full p-48">
             No cars of this choice
           </p>
+        ) : filteredCars.length === 1 ? (
+          // Show single car without slider
+          <div className="w-full flex justify-center">
+            <CarCard car={filteredCars[0]} />
+          </div>
         ) : (
+          // Show carousel with multiple cars
           <div className="relative">
-            {/* Arrows - hidden on small screens */}
+            {/* Arrows (hidden on small screens) */}
             <button
               onClick={() => sliderRef.current?.prev()}
               className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
@@ -107,11 +114,10 @@ const NewListings = () => {
 
             {/* Carousel */}
             <div
-  key={filteredCars.length + selectedCategory}
-  ref={sliderInstanceRef}
-  className="keen-slider w-full"
->
-
+              key={filteredCars.length + selectedCategory}
+              ref={sliderInstanceRef}
+              className="keen-slider w-full"
+            >
               {filteredCars.map((car, index) => (
                 <div className="keen-slider__slide px-2" key={index}>
                   <CarCard car={car} />
@@ -119,16 +125,14 @@ const NewListings = () => {
               ))}
             </div>
 
-            {/* Pagination Dots */}
+            {/* Dots */}
             <div className="flex justify-center mt-4 gap-2">
-              {Array.from({ length: totalSlides }).map((_, idx) => (
+              {filteredCars.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => sliderRef.current?.moveToIdx(idx)}
                   className={`w-3 h-3 rounded-full ${
-                    currentSlide === idx
-                      ? "bg-secondary"
-                      : "bg-gray-400"
+                    currentSlide === idx ? "bg-secondary" : "bg-gray-400"
                   } transition duration-300`}
                 />
               ))}
