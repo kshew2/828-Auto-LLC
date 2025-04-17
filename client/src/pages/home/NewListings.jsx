@@ -74,7 +74,7 @@ const NewListings = () => {
             onChange={(e) => setSelectedCategory(e.target.value)}
             name="category"
             id="category"
-            className="border bg-[#EAEAEA] border-gray-300 rounded-md px-4 py-2 focus:outline-none"
+            className="border border-gray-300 rounded-md px-4 py-2 text-black bg-[#EAEAEA] focus:outline-none focus:ring-2 focus:ring-secondary appearance-none"
           >
             {categories.map((category, index) => (
               <option key={index} value={category}>
@@ -91,22 +91,27 @@ const NewListings = () => {
           </p>
         ) : (
           <div className="relative">
-            {/* Arrow Buttons - hidden on small screens */}
+            {/* Arrows - hidden on small screens */}
             <button
               onClick={() => sliderRef.current?.prev()}
-              className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-300 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
+              className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8592;
             </button>
             <button
               onClick={() => sliderRef.current?.next()}
-              className="hidden md:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-300 text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
+              className="hidden md:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white text-black px-3 py-2 rounded shadow hover:bg-gray-200 transition"
             >
               &#8594;
             </button>
 
             {/* Carousel */}
-            <div ref={sliderInstanceRef} className="keen-slider w-full">
+            <div
+  key={filteredCars.length + selectedCategory}
+  ref={sliderInstanceRef}
+  className="keen-slider w-full"
+>
+
               {filteredCars.map((car, index) => (
                 <div className="keen-slider__slide px-2" key={index}>
                   <CarCard car={car} />
@@ -114,7 +119,7 @@ const NewListings = () => {
               ))}
             </div>
 
-            {/* Dots Navigation */}
+            {/* Pagination Dots */}
             <div className="flex justify-center mt-4 gap-2">
               {Array.from({ length: totalSlides }).map((_, idx) => (
                 <button
