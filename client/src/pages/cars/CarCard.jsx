@@ -23,7 +23,7 @@ const CarCard = ({ car }) => {
   <div className="bg-secondary w-full rounded-lg transition-shadow duration-300 flex sm:justify-start justify-center p-2">
   <div className="flex sm:flex-row flex-col items-center w-full">
     {/* Image Section */}
-    <div className="sm:w-1/2 w-full p-2 max-h-[500px] h-full">
+    <div className="sm:w-1/2 w-full p-2 sm:max-h-[300px] max-h-[500px] h-full">
       <div className="w-full h-full">
         {renderMedia(car.coverImage)}
       </div>
