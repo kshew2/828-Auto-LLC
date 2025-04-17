@@ -14,9 +14,9 @@ const CarDetail = () => {
     const items = car.media && car.media.length > 0 ? car.media.map((media, index) => {
         const isVideo = media.endsWith('.mp4') || media.endsWith('.webm') || media.endsWith('.ogg');
         return (
-            <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
+            <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 {isVideo ? (
-                    <video controls style={{ height: '100%', width: '100%' }} className="rounded">
+                    <video controls style={{ width: '100%', height: 'auto' }} className="rounded">
                         <source src={media} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
@@ -24,7 +24,7 @@ const CarDetail = () => {
                     <img
                         src={media}
                         alt={`${car.make} ${car.model}`}
-                        style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                        style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
                         className="rounded"
                     />
                 )}
@@ -35,40 +35,14 @@ const CarDetail = () => {
     return (
         <div className="flex justify-center items-center p-10 min-h-screen bg-bgdark">
             <style>
-{`
-.custom-nav-btn {
-    font-size: 2rem; /* Increase the font size for larger buttons */
-    padding: 1px;
-    margin: 0;
-    // background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    // color: white; /* White text color */
-    // border: none; /* Remove border */
-    // border-radius: 50%; /* Make the buttons circular */
-    // width: 40px; /* Set a fixed width */
-    // height: 40px; /* Set a fixed height */
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
-    // cursor: pointer; /* Change cursor to pointer */
-    // position: absolute; /* Position the buttons absolutely */
-    // top: 100%; /* Center vertically */
-    // padding: 10px;
-    // transform: translateY(-50%); /* Adjust for centering */
-    // z-index: 10; /* Ensure buttons are above other elements */
-}
-
-// .alice-carousel__prev-btn {
-//     left: 10px; /* Position the previous button to the left */
-//     padding-top: 10px;
-// }
-
-// .alice-carousel__next-btn {
-//     right: 10px; /* Position the next button to the right */
-//     margin-top: 10px;
-//     padding-top: 10px;
-// }
-`}
-</style>
+                {`
+                .custom-nav-btn {
+                    font-size: 2rem;
+                    padding: 1px;
+                    margin: 0;
+                }
+                `}
+            </style>
             <div className="max-w-2xl w-full">
                 {/* Title */}
                 <div className="text-center mb-2">
@@ -80,7 +54,7 @@ const CarDetail = () => {
                 {/* Main Content */}
                 <div className="shadow-lg p-5 bg-secondary rounded-xl">
                     {/* Images */}
-                    <div className="flex justify-center m-0">
+                    <div className="flex justify-center m-0" style={{ maxHeight: '100%', overflow: 'hidden' }}>
                         {items.length > 0 ? (
                             <AliceCarousel
                                 items={items}
@@ -95,7 +69,7 @@ const CarDetail = () => {
                             <p>No media available</p>
                         )}
                     </div>
-                        <hr className='mb-2 text-lg font-black'></hr>
+                    <hr className='mb-2 text-lg font-black'></hr>
                     {/* Details and Features */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Details */}
@@ -111,9 +85,6 @@ const CarDetail = () => {
                             <p className="text-gray-700 mb-2 sm:text-base text-base">
                                 <strong>Year:</strong> {new Date(car?.createdAt).toLocaleDateString()}
                             </p>
-                            {/* <p className="text-gray-700 mb-2 sm:text-base text-sm capitalize">
-                                <strong>Category:</strong> {car?.category}
-                            </p> */}
                             <p className="text-gray-700 sm:text-base text-base"><strong>Description:</strong> {car.model}</p>
                         </div>
 
