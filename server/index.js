@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const port = process.env.PORT || 5000;
 require('dotenv').config();
+//console.log('DB_URL:', process.env.DB_URL);
 
 
 
@@ -31,16 +32,17 @@ app.use("/api/auth", userRoutes);
 
 async function main() {
     try {
-        //console.log('Connecting to MongoDB with URL:', process.env.DB_URL)
+        if (!process.env.DB_URL) {
+            throw new Error('DB_URL is not defined in the environment variables.');
+        }
+        console.log('Connecting to MongoDB with URL:', process.env.DB_URL);
         await mongoose.connect(process.env.DB_URL);
         console.log("MongoDB connected successfully");
-        
-        // This route should be after the database connection and server initialization
+
         app.get('/', (req, res) => {
             res.send("Car server is running!");
         });
 
-        // Start the server only after the DB connection is established
         app.listen(port, () => {
             console.log(`Server listening on port ${port}`);
         });
