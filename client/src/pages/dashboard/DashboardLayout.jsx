@@ -98,7 +98,7 @@ function DashboardLayout() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto lg:ml-64 mt-14 lg:mt-0 pt-16">
+      <div className="flex-1 overflow-y-auto lg:ml-64 mt-14 lg:mt-0 pt-4">
         <Outlet />
       </div>
     </div>
