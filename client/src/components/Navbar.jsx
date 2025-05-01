@@ -82,7 +82,11 @@ export const Navbar = () => {
           {/* Logo */}
           <div className="flex-1 text-secondary">
             <NavLink to="/" className="flex-shrink-0">
-              Logo
+              <img
+                src="../../public/Logo.png"
+                alt="Logo"
+                className="h-24 w-auto"
+              />
             </NavLink>
           </div>
 

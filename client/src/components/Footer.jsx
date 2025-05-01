@@ -1,17 +1,88 @@
-import React, { useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { HiMail } from "react-icons/hi";
-import { HiPhone } from "react-icons/hi";
-import { HiLocationMarker } from "react-icons/hi";
-import { FaFacebook } from "react-icons/fa";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import MapLibreMap from "./MapLibreMap";
+import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
+import DOMPurify from 'dompurify';
+import L from 'leaflet';
+import { HiLocationMarker, HiMail, HiPhone } from 'react-icons/hi';
+import { FaFacebook } from 'react-icons/fa';
+import MapLibreMap from './MapLibreMap';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const Footer = () => {
-  const markerRef = useRef(null);
+  // Mini contact form state (exact replica of Contact.jsx)
+  const [miniFormData, setMiniFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const handleMiniChange = (e) => {
+    const { name, value } = e.target;
+    setMiniFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const validatePhone = (phone) => {
+    const re = /^[0-9\b]+$/;
+    return re.test(phone);
+  };
+
+  const handleMiniSubmit = (e) => {
+    e.preventDefault();
+    if (!validateEmail(miniFormData.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (!validatePhone(miniFormData.phone)) {
+      alert('Please enter a valid phone number.');
+      return;
+    }
+    
+    const sanitizedData = {
+      name: DOMPurify.sanitize(miniFormData.name),
+      email: DOMPurify.sanitize(miniFormData.email),
+      phone: DOMPurify.sanitize(miniFormData.phone),
+      message: DOMPurify.sanitize(miniFormData.message),
+    };
+
+    // Send contact email
+    emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      sanitizedData,
+      import.meta.env.VITE_EMAILJS_USER_ID
+    )
+    .then((response) => {
+      console.log('Contact email sent!', response.status, response.text);
+      // Send auto-reply email
+      emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID,
+        sanitizedData,
+        import.meta.env.VITE_EMAILJS_USER_ID
+      )
+      .then((res) => {
+        console.log('Auto-reply sent!', res.status, res.text);
+      })
+      .catch((err) => {
+        console.error('Failed auto-reply...', err);
+      });
+      alert('Message sent successfully!');
+      setMiniFormData({ name: '', email: '', phone: '', message: '' });
+    })
+    .catch((err) => {
+      console.error('Failed contact email...', err);
+      alert('Failed to send message. Please try again later.');
+    });
+  };
 
   const customIcon = new L.Icon({
     iconUrl: markerIcon,
@@ -24,7 +95,7 @@ const Footer = () => {
   return (
     <>
       <footer className="max-w-full bg-bgdark flex flex-col items-center justify-center text-center py-4 px-1">
-        {/* Content Container with max width */}
+        {/* Content Container */}
         <div className="max-w-screen-xl w-full mx-auto">
           <h1 className="font-primary text-primary text-7xl font-semibold py-6">
             Come visit us!
@@ -40,15 +111,15 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Contact & Hours Container - Reduced margin and top aligned */}
-          <div className="w-full bg-bgdark text-white ">
+          {/* Contact & Hours Container with a slightly darker background */}
+          <div className="w-full mx-auto bg-[#0E1315] text-white py-6 rounded-xl">
             <div className="mx-auto px-6 flex flex-col md:flex-row items-start justify-between gap-8">
-              {/* Contact Details */}
-              <div className="text-center md:w-1/2 flex flex-col items-center">
+              {/* Column 1 - Company Info */}
+              <div className="text-center mx-auto md:w-1/3 flex flex-col items-center">
                 <h2 className="text-4xl font-bold text-secondary mb-6">
-                  828 Auto LLC
+                  Company Info
                 </h2>
-                <div className="mt-6 flex justify-center gap-8">
+                <div className="mt-6 flex justify-center gap-10">
                   {[
                     {
                       icon: <HiLocationMarker />,
@@ -82,8 +153,8 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Business Hours */}
-              <div className="text-center md:w-1/2 flex flex-col items-center">
+              {/* Column 2 - Business Hours */}
+              <div className="text-center mx-auto w-full sm:w-1/3 flex flex-col items-center">
                 <h2 className="text-4xl font-bold text-secondary mb-6">
                   Business Hours
                 </h2>
@@ -142,16 +213,90 @@ const Footer = () => {
                   </table>
                 </div>
               </div>
+
+              {/* Column 3 - Mini Contact Form (Exact Replica with modifications) */}
+              <div className="text-center mx-auto w-full md:w-1/3 flex flex-col items-center">
+                <h2 className="text-4xl font-bold text-secondary mb-6">
+                  Contact Us
+                </h2>
+                <form className="w-full space-y-6" onSubmit={handleMiniSubmit}>
+                  {/* Name and Phone on the same line */}
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="w-full md:w-1/2">
+                      <label htmlFor="name" className="block text-left text-lg font-medium text-white">
+                        Name<span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={miniFormData.name}
+                        onChange={handleMiniChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
+                        required
+                        maxLength="100"
+                      />
+                    </div>
+                    <div className="w-full md:w-1/2">
+                      <label htmlFor="phone" className="block text-left text-lg font-medium text-white">
+                        Phone<span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        value={miniFormData.phone}
+                        onChange={handleMiniChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
+                        required
+                        maxLength="15"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-left text-lg font-medium text-white">
+                      Email<span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={miniFormData.email}
+                      onChange={handleMiniChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
+                      required
+                      maxLength="100"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-left text-lg font-medium text-white">
+                      Message<span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows="4"
+                      value={miniFormData.message}
+                      onChange={handleMiniChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 text-bgdark focus:ring-secondary focus:border-secondary"
+                      required
+                      maxLength="1000"
+                    ></textarea>
+                  </div>
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-primary hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* <div className="w-full bg-bgdark">
-        <div className="max-w-screen-xl h-[400px] lg:h-[600px] px-4 bg-bgdark mx-auto">
-          <MapLibreMap />
-        </div>
-      </div> */}
     </>
   );
 };

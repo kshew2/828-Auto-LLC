@@ -20,8 +20,8 @@ const InventoryCarCard = ({ car }) => {
   return (
     <Link to={`/cars/${car._id}`}>
       <div className="bg-secondary w-full mx-auto rounded-lg transition-shadow duration-300 flex flex-col items-center p-3">
-        {/* Image Section */}
-        <div className="w-full p-2 h-full">
+        {/* Image Section with fixed height */}
+        <div className="w-full p-2 h-96">
           <div className="w-full h-full">
             {renderMedia(car.coverImage)}
           </div>
