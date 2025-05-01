@@ -2,8 +2,8 @@ import React from 'react';
 
 const AboutUs = () => {
   return (
-    <div className="py-10 bg-bgdark px-8 mx-auto min-h-screen">
-      <div className="max-w-screen-xxl mx-auto mb-0">
+    <div className="py-10 bg-bgdark px-8 min-h-screen">
+      <div className="max-w-screen-xl mx-auto mb-0">
         {/* Mobile heading (hidden on md and above) */}
         <h2 className="text-3xl font-semibold mb-4 text-secondary font-primary text-start md:hidden">
           About 828 Auto LLC
