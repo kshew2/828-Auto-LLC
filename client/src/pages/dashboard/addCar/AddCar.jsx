@@ -161,7 +161,7 @@ const AddCar = () => {
 
   return (
     //<div className="max-w-2xl mx-auto md:p-6 p-3 bg-white rounded-lg shadow-md overflow-visible">
-    <div className="max-w-2xl mx-auto md:p-6 p-3 bg-white rounded-lg shadow-md overflow-visible">
+    <div className="max-w-2xl mx-auto md:p-6 p-3 mb-3 bg-white rounded-lg shadow-md overflow-visible">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Vehicle</h2>
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         {/* Other form fields */}
