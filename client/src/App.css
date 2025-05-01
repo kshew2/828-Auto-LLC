@@ -101,6 +101,8 @@ html, body {
    height: 100%;
    overflow: auto;
   -webkit-overflow-scrolling: touch;
+  overflow-anchor: none;
+  -webkit-transform: translate3d(0, 0, 0);
  }
 
 /* .bg{
