@@ -15,6 +15,7 @@ const Footer = () => {
     email: '',
     phone: '',
     message: '',
+    time:''
   });
 
   const handleMiniChange = (e) => {
@@ -51,6 +52,7 @@ const Footer = () => {
       email: DOMPurify.sanitize(miniFormData.email),
       phone: DOMPurify.sanitize(miniFormData.phone),
       message: DOMPurify.sanitize(miniFormData.message),
+      time: new Date().toLocaleString(), // Add timestamp
     };
 
     // Send contact email
