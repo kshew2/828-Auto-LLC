@@ -8,6 +8,7 @@ const Contact = () => {
     email: '',
     phone: '',
     message: '',
+    time: ''
   });
 
   const handleChange = (e) => {
@@ -49,6 +50,7 @@ const Contact = () => {
       email: DOMPurify.sanitize(formData.email),
       phone: DOMPurify.sanitize(formData.phone),
       message: DOMPurify.sanitize(formData.message),
+      time: new Date().toLocaleString(), // Add timestamp
     };
 
     // Send contact email
