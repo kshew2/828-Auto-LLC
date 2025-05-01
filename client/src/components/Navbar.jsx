@@ -85,7 +85,7 @@ export const Navbar = () => {
               <img
                 src="/Logo.png"
                 alt="Logo"
-                className="h-12 w-28 lg:h-20 lg:w-40"
+                className="h-12 w-28 lg:h-20 lg:w-48"
               />
             </NavLink>
           </div>
