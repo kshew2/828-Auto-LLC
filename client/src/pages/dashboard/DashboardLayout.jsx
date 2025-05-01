@@ -23,7 +23,7 @@ function DashboardLayout() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-y-auto">
+    <div className="flex flex-col h-screen">
       {/* Top Navigation Bar */}
       <div className="bg-gray-800 text-white flex items-center justify-between p-4 lg:hidden absolute top-0 left-0 right-0 z-50">
         <span className="font-bold text-lg">Admin Dashboard</span>

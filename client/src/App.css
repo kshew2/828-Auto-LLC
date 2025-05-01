@@ -104,6 +104,16 @@ html, body {
   overflow-anchor: none;
   -webkit-transform: translate3d(0, 0, 0);
  }
+ @supports (-webkit-touch-callout: none) {
+   html, body {
+     overflow: auto;
+     -webkit-overflow-scrolling: touch;
+   }
+ 
+   .flex-1 {
+     overflow: visible !important;
+   }
+ }
 
 /* .bg{
    background-image: url(./assets/Untitled\ design.png);
