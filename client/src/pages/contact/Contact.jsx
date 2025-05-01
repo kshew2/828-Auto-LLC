@@ -103,6 +103,9 @@ const Contact = () => {
             <strong>Company Name:</strong> 828 Auto LLC
           </p>
           <p className="text-lg text-gray-700 my-3">
+            <strong>Owner</strong> Chasity Mitchell
+          </p>
+          <p className="text-lg text-gray-700 my-3">
             <strong>Address:</strong> 2788 Morganton Blvd SW, Lenoir, NC
           </p>
           <p className="text-lg text-gray-700 my-3">
