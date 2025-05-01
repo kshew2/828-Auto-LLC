@@ -23,7 +23,7 @@ function DashboardLayout() {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col h-screen overflow-y-auto">
       {/* Top Navigation Bar */}
       <div className="bg-gray-800 text-white flex items-center justify-between p-4 lg:hidden fixed top-0 left-0 right-0 z-50">
         <span className="font-bold text-lg">Admin Dashboard</span>
@@ -37,7 +37,7 @@ function DashboardLayout() {
 
       {/* Dropdown Menu for Small Screens */}
       {isDropdownOpen && (
-        <div className="bg-gray-800 text-white lg:hidden fixed top-14 left-0 right-0 z-40">
+        <div className="bg-gray-800 text-white lg:hidden fixed top-14 left-0 right-0 z-40 overflow-y-auto">
           <ul className="flex flex-col">
             <li className="p-4 hover:bg-gray-700">
               <Link to="/dashboard" onClick={toggleDropdown}>
@@ -98,7 +98,7 @@ function DashboardLayout() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto lg:ml-64 mt-14 lg:mt-0">
+      <div className="flex-1 overflow-y-auto lg:ml-64 mt-14 lg:mt-0 pt-16">
         <Outlet />
       </div>
     </div>
