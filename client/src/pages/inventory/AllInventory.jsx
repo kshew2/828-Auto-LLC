@@ -3,7 +3,7 @@ import Inventory from './Inventory';
 import { useFetchAllCarsQuery } from '../../redux/features/cars/carsApi';
 
 const categories = [
-  "Choose a Type",
+  "All Cars",
   "Coupe",
   "Sedan",
   "Pickup Truck",
@@ -18,12 +18,12 @@ const categories = [
 ];
 
 const AllInventory = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Choose a Type");
+  const [selectedCategory, setSelectedCategory] = useState("All Cars");
   const { data, error, isLoading } = useFetchAllCarsQuery();
   const cars = data?.cars || [];
 
   const filteredCars =
-    selectedCategory === "Choose a Type"
+    selectedCategory === "All Cars"
       ? cars
       : cars.filter((car) => car.category.toLowerCase() === selectedCategory.toLowerCase());
 

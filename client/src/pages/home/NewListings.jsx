@@ -5,7 +5,7 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 
 const categories = [
-  "Choose a Type",
+  "All Cars",
   "Coupe",
   "Sedan",
   "Pickup Truck",
@@ -20,7 +20,7 @@ const categories = [
 ];
 
 const NewListings = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Choose a Type");
+  const [selectedCategory, setSelectedCategory] = useState("All Cars");
   const [currentSlide, setCurrentSlide] = useState(0);
   const [totalSlides, setTotalSlides] = useState(0);
   const sliderRef = useRef(null);
@@ -29,7 +29,7 @@ const NewListings = () => {
   const cars = data?.cars || [];
 
   const filteredCars =
-    selectedCategory === "Choose a Type"
+    selectedCategory === "All Cars"
       ? cars
       : cars.filter(
           (car) =>
