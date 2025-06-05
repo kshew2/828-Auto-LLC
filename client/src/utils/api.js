@@ -11,7 +11,7 @@ export const fetchWithAuth = async (url, options = {}) => {
 
   // Log the response to see what you're getting
   const text = await response.text(); // Get response as text
-  console.log('Response:', text); // Log it
+  //console.log('Response:', text); // Log it
 
   if (response.status === 401) {
     // Token is expired or invalid, logout the user
