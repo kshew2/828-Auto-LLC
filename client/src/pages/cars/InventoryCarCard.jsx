@@ -34,7 +34,7 @@ const InventoryCarCard = ({ car }) => {
           </h3>
 
           <p className="text-lg lg:text-xl font-medium mb-4 text-tertiary-accent">
-            ${car.price} | {car.mileage} miles
+            ${car.price.toLocaleString()} | {car.mileage.toLocaleString()} miles
           </p>
           <hr className="my-4 border-gray-300" />
           {/* Details Grid */}
@@ -53,7 +53,7 @@ const InventoryCarCard = ({ car }) => {
             </div>
             <div className="flex flex-col">
               <p className="font-semibold">Mileage:</p>
-              <p>{car.mileage || 'N/A'}</p>
+              <p>{car.mileage.toLocaleString() || 'N/A'}</p>
             </div>
             <div className="flex flex-col">
               <p className="font-semibold">Year:</p>
@@ -61,7 +61,7 @@ const InventoryCarCard = ({ car }) => {
             </div>
             <div className="flex flex-col">
               <p className="font-semibold">Type:</p>
-              <p>{car.type || 'N/A'}</p>
+              <p>{car.category || 'N/A'}</p>
             </div>
             <div className="flex flex-col">
               <p className="font-semibold">Color:</p>

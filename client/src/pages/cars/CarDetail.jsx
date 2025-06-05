@@ -48,7 +48,7 @@ const CarDetail = () => {
                 {/* Title */}
                 <div className="text-center mb-2">
                     <h1 className="text-2xl font-bold text-secondary font-primary sm:text-xl">
-                        {car.year} {car.make} {car.model}
+                        {car.year} {car.make} {car.model} | ${car.price.toLocaleString()}
                     </h1>
                 </div>
 
@@ -101,7 +101,7 @@ const CarDetail = () => {
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Year:</strong> {car.year || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Color:</strong> {car.color || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Trim:</strong> {car.trim || 'admin'}</p>
-                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Mileage:</strong> {car.mileage || 'admin'}</p>
+                            <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Mileage:</strong> {car.mileage.toLocaleString() || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Type/Category:</strong> {car.category || 'admin'}</p>
                             <p className="text-gray-700 mb-1 sm:text-base text-base"><strong>Engine:</strong> {car.engine || 'admin'}</p>
                             <p className="text-gray-700 mb-2 sm:text-base text-base">

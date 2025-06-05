@@ -37,14 +37,14 @@ async function main() {
         }
         //console.log('Connecting to MongoDB with URL:', process.env.DB_URL);
         await mongoose.connect(process.env.DB_URL);
-        //console.log("MongoDB connected successfully");
+        console.log("MongoDB connected successfully");
 
         app.get('/', (req, res) => {
             res.send("Car server is running!");
         });
 
         app.listen(port, () => {
-            //console.log(`Server listening on port ${port}`);
+            console.log(`Server listening on port ${port}`);
         });
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);

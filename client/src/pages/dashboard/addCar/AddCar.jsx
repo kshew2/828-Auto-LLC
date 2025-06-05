@@ -119,7 +119,7 @@ const AddCar = () => {
     formData.append("make", data.make);
     formData.append("model", data.model);
     formData.append("year", data.year);
-    formData.append("type", data.type);
+    // formData.append("type", data.type);
     formData.append("color", data.color);
     formData.append("engine", data.engine);
     formData.append("mileage", data.mileage);
@@ -158,6 +158,7 @@ const AddCar = () => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     //<div className="max-w-2xl mx-auto md:p-6 p-3 bg-white rounded-lg shadow-md overflow-visible">
@@ -186,13 +187,13 @@ const AddCar = () => {
           placeholder="Year"
           register={register}
         />
-        <InputField
+        {/* <InputField
           label="Type"
           name="type"
           type="text"
           placeholder="Type"
           register={register}
-        />
+        /> */}
         <InputField
           label="Color"
           name="color"
@@ -223,7 +224,7 @@ const AddCar = () => {
         />
         <InputField
           label="Trim"
-          name="Trim"
+          name="trim"
           type="text"
           placeholder="Trim"
           register={register}
