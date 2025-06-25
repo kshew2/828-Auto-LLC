@@ -232,7 +232,7 @@ const Footer = () => {
                         name="name"
                         value={miniFormData.name}
                         onChange={handleMiniChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
+                        className="mt-1 block w-full border border-gray-300 text-bgdark rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
                         required
                         maxLength="100"
                       />
@@ -247,7 +247,7 @@ const Footer = () => {
                         name="phone"
                         value={miniFormData.phone}
                         onChange={handleMiniChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
+                        className="mt-1 block w-full border border-gray-300 text-bgdark rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
                         required
                         maxLength="15"
                       />
@@ -263,7 +263,7 @@ const Footer = () => {
                       name="email"
                       value={miniFormData.email}
                       onChange={handleMiniChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 focus:ring-secondary focus:border-secondary"
+                      className="mt-1 block w-full border border-gray-300 rounded-md py-2 px-3 text-bgdark focus:ring-secondary focus:border-secondary"
                       required
                       maxLength="100"
                     />
