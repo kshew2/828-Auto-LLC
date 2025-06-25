@@ -130,7 +130,7 @@ const UpdateCar = () => {
         formData.append('make', data.make);
         formData.append('model', data.model);
         formData.append('year', data.year);
-        formData.append('type', data.type);
+        // formData.append('type', data.type);
         formData.append('color', data.color);
         formData.append('engine', data.engine);
         formData.append('mileage', data.mileage);
@@ -199,13 +199,13 @@ const UpdateCar = () => {
                     placeholder="Year"
                     register={register}
                 />
-                <InputField
+                {/* <InputField
                     label="Type"
                     name="type"
                     type="text"
                     placeholder="Type"
                     register={register}
-                />
+                /> */}
                 <InputField
                     label="Color"
                     name="color"

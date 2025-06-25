@@ -8,6 +8,7 @@ const Contact = () => {
     email: '',
     phone: '',
     message: '',
+    time: ''
   });
 
   const handleChange = (e) => {
@@ -49,6 +50,7 @@ const Contact = () => {
       email: DOMPurify.sanitize(formData.email),
       phone: DOMPurify.sanitize(formData.phone),
       message: DOMPurify.sanitize(formData.message),
+      time: new Date().toLocaleString(), // Add timestamp
     };
 
     // Send contact email
@@ -101,6 +103,9 @@ const Contact = () => {
           </h3> */}
           <p className="text-lg text-gray-700 my-3">
             <strong>Company Name:</strong> 828 Auto LLC
+          </p>
+          <p className="text-lg text-gray-700 my-3">
+            <strong>Owner</strong> Chasity Mitchell
           </p>
           <p className="text-lg text-gray-700 my-3">
             <strong>Address:</strong> 2788 Morganton Blvd SW, Lenoir, NC

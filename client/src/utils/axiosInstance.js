@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use(
         console.log('Current user:', auth.currentUser);
         if (auth.currentUser) {
             const token = await auth.currentUser.getIdToken();
-            console.log('Attaching token:', token);
+            //console.log('Attaching token:', token);
             config.headers.Authorization = `Bearer ${token}`;
         } else {
             console.warn('No currentUser. Token not attached.');

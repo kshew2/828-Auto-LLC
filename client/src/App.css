@@ -99,7 +99,20 @@ html, body {
    padding: 0;
    width: 100%;
    height: 100%;
-   overflow-x: hidden;
+   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overflow-anchor: none;
+  -webkit-transform: translate3d(0, 0, 0);
+ }
+ @supports (-webkit-touch-callout: none) {
+   html, body {
+     overflow: auto;
+     -webkit-overflow-scrolling: touch;
+   }
+ 
+   .flex-1 {
+     overflow: visible !important;
+   }
  }
 
 /* .bg{
@@ -144,4 +157,12 @@ html, body {
    object-fit: cover;
    border-radius: 8px;
  }
- 
+ .scrollable-container {
+   overflow-y: auto;
+   -webkit-overflow-scrolling: touch;
+ }
+
+ .container {
+   height: auto; /* Allow content to grow */
+   overflow: visible; /* Ensure scrolling is not restricted */
+ }

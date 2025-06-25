@@ -15,6 +15,7 @@ const Footer = () => {
     email: '',
     phone: '',
     message: '',
+    time:''
   });
 
   const handleMiniChange = (e) => {
@@ -51,6 +52,7 @@ const Footer = () => {
       email: DOMPurify.sanitize(miniFormData.email),
       phone: DOMPurify.sanitize(miniFormData.phone),
       message: DOMPurify.sanitize(miniFormData.message),
+      time: new Date().toLocaleString(), // Add timestamp
     };
 
     // Send contact email
@@ -124,7 +126,7 @@ const Footer = () => {
                     {
                       icon: <HiLocationMarker />,
                       link:
-                        "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645",
+                        "https://www.google.com/maps/place/2788+Morganton+Blvd+SW,+Lenoir,+NC+28645/@35.8752307,-81.5918467,17z/data=!3m1!4b1!4m6!3m5!1s0x8850d94e1760b347:0xb9f8f5a45a1cc6df!8m2!3d35.8752307!4d-81.5918467!16s%2Fg%2F11j7lwyc8f?entry=ttu&g_ep=EgoyMDI1MDQyOS4wIKXMDSoASAFQAw%3D%3D",
                     },
                     {
                       icon: <HiMail />,

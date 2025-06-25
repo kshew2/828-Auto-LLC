@@ -7,12 +7,12 @@ const baseQuery = fetchBaseQuery({
     prepareHeaders: async (headers) => {
         const token = auth.currentUser && await auth.currentUser.getIdToken(true);
         if (token) {
-            console.log('Attaching token to headers:', token); // Log the token
+            //console.log('Attaching token to headers:', token); // Log the token
             headers.set('Authorization', `Bearer ${token}`);
         } else {
             console.warn('No token available. Authorization header not set.');
         }
-        console.log('Headers before returning:', headers); // Log all headers
+        //console.log('Headers before returning:', headers); // Log all headers
         return headers;
     },
 });

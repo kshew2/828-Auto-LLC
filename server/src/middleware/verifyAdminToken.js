@@ -22,7 +22,7 @@ if (!admin.apps.length) {
 }
 
 const verifyAdminToken = async (req, res, next) => {
-    console.log("Request Headers:", req.headers); // Debug: log headers
+    //console.log("Request Headers:", req.headers); // Debug: log headers
     const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: 'Access Denied. No token provided' });
@@ -30,7 +30,7 @@ const verifyAdminToken = async (req, res, next) => {
 
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
-        console.log("Decoded Token:", decodedToken);
+        //console.log("Decoded Token:", decodedToken);
         if (!decodedToken.admin) {
             return res.status(403).json({ message: 'Access Denied. Admin privileges required' });
         }

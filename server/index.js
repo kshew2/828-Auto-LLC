@@ -35,7 +35,7 @@ async function main() {
         if (!process.env.DB_URL) {
             throw new Error('DB_URL is not defined in the environment variables.');
         }
-        console.log('Connecting to MongoDB with URL:', process.env.DB_URL);
+        //console.log('Connecting to MongoDB with URL:', process.env.DB_URL);
         await mongoose.connect(process.env.DB_URL);
         console.log("MongoDB connected successfully");
 
