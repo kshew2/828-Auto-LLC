@@ -178,31 +178,31 @@ const Footer = () => {
                       <tr>
                         <td className="px-4 py-2 text-left">Monday</td>
                         <td className="px-4 py-2 text-right whitespace-nowrap">
-                          9:00 AM - 6:00 PM
+                          Closed
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2 text-left">Tuesday</td>
                         <td className="px-4 py-2 text-right whitespace-nowrap">
-                          9:00 AM - 6:00 PM
+                          11:00 AM - 6:00 PM
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2 text-left">Wednesday</td>
                         <td className="px-4 py-2 text-right whitespace-nowrap">
-                          9:00 AM - 6:00 PM
+                          Closed
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2 text-left">Thursday</td>
                         <td className="px-4 py-2 text-right whitespace-nowrap">
-                          9:00 AM - 6:00 PM
+                          11:00 AM - 6:00 PM
                         </td>
                       </tr>
                       <tr>
                         <td className="px-4 py-2 text-left">Friday</td>
                         <td className="px-4 py-2 text-right whitespace-nowrap">
-                          9:00 AM - 6:00 PM
+                        11:00 AM - 6:00 PM
                         </td>
                       </tr>
                       <tr>
