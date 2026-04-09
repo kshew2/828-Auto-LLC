@@ -16,7 +16,6 @@ const categories = [
   "Sports Car",
   "EV",
   "Hybrid",
-  "Minivan",
 ];
 
 const NewListings = () => {
